@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import Routes from './routes'
 
 import HomePage from 'components/home';
-import GoogleApiWrapper from 'components/GoogleApiWrapper';
 
 ReactDOM.render(
  <Routes />,

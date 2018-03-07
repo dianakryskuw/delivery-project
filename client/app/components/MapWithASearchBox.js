@@ -10,36 +10,11 @@ const {
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 
 
-export default class RenderMap extends React.Component{
+export default class MapWithASearchBox extends React.Component{
   constructor(props){
     super(props);
-    this.func=this.func.bind(this);
   }
-  state = {
-      point1:[],
-      point2:[],
-      counter:0
-    }
-func (e){
-  const nextMarkers ={lat:e.latLng.lat(), lng:e.latLng.lng()};
-  current_location={lat:e.latLng.lat(), lng:e.latLng.lng()}
-  let count = this.state.counter;
-  count+=1;
-  if(count==1){
-    this.setState({
-      point1:current_location,
-      counter: count
-    });
-  }
-  else{
-    var from_location = this.state.point1;
-    this.setState({
-      point2: from_location,
-      point1: current_location
-    })
-  }
-  this.props.clickLocation([this.state.point1,this.state.point2]);
-  }
+
 render(){
   const MapWithASearchBox = compose(
     withProps({
@@ -59,6 +34,8 @@ render(){
           },
           marker1: [],
           marker2: [],
+          address1:[],
+          address2:[],
           onMapMounted: ref => {
             refs.map = ref;
           },
@@ -74,22 +51,26 @@ render(){
           onMapClick:(e)=>{
             const nextMarker = {position: e.latLng}
             const nextCenter = _.get(nextMarker, '0.position', this.state.center);
-            if(this.state.counter==1)
-            this.setState({
-              center: nextCenter,
-              marker1: nextMarker,
-            });
-            else
             this.setState({
               center: nextCenter,
               marker1:this.state.marker2,
               marker2:nextMarker
             })
+            var geocoder = new google.maps.Geocoder();
+              geocoder.geocode({
+                'latLng': e.latLng
+              }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[0]) {
+                      document.getElementById('inpt5').value=document.getElementById('inpt6').value;
+                      document.getElementById('inpt6').value=results[0].formatted_address;
+                  }
+                }
+            });
             document.getElementById('inpt1').value=this.state.marker1 != undefined ? this.state.marker1.position.lat() : "";
             document.getElementById('inpt2').value=this.state.marker1 != undefined ? this.state.marker1.position.lng() : "";
             document.getElementById('inpt3').value=this.state.marker2 != undefined ? this.state.marker2.position.lat() : "";
             document.getElementById('inpt4').value=this.state.marker2 != undefined ? this.state.marker2.position.lng() : "";
-            //this.props.clickLocation([nextMarker,nextMarker]);
           },
           onPlacesChanged: () => {
             const places = refs.searchBox.getPlaces();
@@ -119,7 +100,7 @@ render(){
   )(props =>
     <GoogleMap
       ref={props.onMapMounted}
-      defaultZoom={15}
+      defaultZoom={7}
       center={props.center}
       onBoundsChanged={props.onBoundsChanged}
       onClick={props.onMapClick}

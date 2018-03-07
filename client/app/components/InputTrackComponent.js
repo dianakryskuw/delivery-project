@@ -1,7 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import FlatButton from 'material-ui/FlatButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DirectionComponent from './DirectionComponent';
 
 export default class InputTrackComponent extends React.Component{
@@ -22,15 +20,16 @@ export default class InputTrackComponent extends React.Component{
         }	
     render(){	
         return(
-            <div>
-    <div class="track-input">
+            <div className="track-inpt">
+            <div class=" read-only">    
+      <h1 className="read-only-inpt">Track your order</h1>
+    </div>
         <div class="group">      
             <input type="text" id="inpt" name="order" required />
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Track Code</label>
         </div>
-    </div>
 	<div class="button-container">
         <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
     </div> 
