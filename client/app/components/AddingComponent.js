@@ -1,8 +1,6 @@
 import React from 'react';
-import Api from 'components/Api';
 import InputComponent from './InputComponent';
-import RenderMap from './MapWithASearchBox';
-import GoogleApiWrapper from './GoogleApiWrapper';
+import MapWithASearchBox from './MapWithASearchBox';
 
 export default class AddingComponent extends React.Component{
     constructor(props){
@@ -18,10 +16,10 @@ export default class AddingComponent extends React.Component{
     return (
     <div> 
         <div className="map-container">
-            <RenderMap clickLocation = {this.clickLocation}/>
+            <MapWithASearchBox clickLocation = {this.clickLocation}/>
         </div>
         <div className="input-data-container">
-            <InputComponent points ={this.state.points }/>
+            <InputComponent />
         </div>
     </div>
         );

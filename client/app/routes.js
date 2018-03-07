@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import GoogleApiWrapper from 'components/GoogleApiWrapper';
 import TrackingComponent from './components/TrackingComponent';
 import AddingComponent from './components/AddingComponent';
 
