@@ -34,7 +34,10 @@ var config = {
     },
 	plugins: [
 		new ExtractTextPlugin("styles.css")
-	]
+	],
+	externals:{
+		"fs": "commonjs fs"
+	}
 };
 
 module.exports = config;
