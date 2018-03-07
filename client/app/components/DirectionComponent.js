@@ -14,6 +14,7 @@ export default class RenderMap extends React.Component{
       super(props);
     }
 render(){
+  console.log(this.props);
     const MapWithASearchBox = compose(
         withProps({
           googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAoT2e9ISl-I6CU8tBpxzo0MFAEpka8Wc4&libraries=geometry,drawing,places",
@@ -25,12 +26,11 @@ render(){
         withGoogleMap,
         lifecycle({
             componentDidMount() {
-                console.log(this.props);
                 const DirectionsService = new google.maps.DirectionsService();
           
                 DirectionsService.route({
-                  origin: new google.maps.LatLng(this.props.olat, this.props.olng),
-                  destination: new google.maps.LatLng(this.props.dlat, this.props.dlng),
+                  origin: new google.maps.LatLng(Number(this.props.or.lat), Number(this.props.or.lng)),
+                  destination: new google.maps.LatLng(Number(this.props.des.lat), Number(this.props.des.lng)),
                   travelMode: google.maps.TravelMode.DRIVING,
                 }, (result, status) => {
                   if (status === google.maps.DirectionsStatus.OK) {
@@ -53,9 +53,7 @@ render(){
         );
         
       
-      return (<MapWithASearchBox olat={this.props.olat}
-                                 olng={this.props.olng}
-                                 dlat={this.props.dlat}
-                                 dlng={this.props.dlng}/>);
+      return (<MapWithASearchBox or={this.props.origin}
+                                 des={this.props.destination}/>);
 }
 };

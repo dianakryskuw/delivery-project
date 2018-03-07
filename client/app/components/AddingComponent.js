@@ -21,7 +21,7 @@ export default class AddingComponent extends React.Component{
             <RenderMap clickLocation = {this.clickLocation}/>
         </div>
         <div className="input-data-container">
-            <InputComponent points ={this.state.points }/>
+            <InputComponent />
         </div>
     </div>
         );

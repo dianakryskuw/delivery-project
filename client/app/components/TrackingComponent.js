@@ -8,14 +8,22 @@ import InputTrackComponent from './InputTrackComponent';
 export default class TrackingComponent extends React.Component{
     constructor(props){
         super(props);
+        this.inputSent=this.inputSent.bind(this);
       }
- 
+      state={
+          from:{},
+          to:{}
+      } 
+      inputSent (point1, point2){
+        this.setState({from: point1})
+        this.setState({to: point2})
+    }
     render(){	
         return(
         <div>
-            <InputTrackComponent />
+            <InputTrackComponent inputSent={this.inputSent}/>
         <div className="track-map-container">
-            <DirectionComponent olat={49.85} olng={24.016} dlat={49.8525800} dlng={24.6514100}/>
+            <DirectionComponent origin={this.state.from} destination={this.state.to}/>
         </div>
     </div>)
     }
