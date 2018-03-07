@@ -87,9 +87,10 @@ var carScheme = new Schema({
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("delivery");
+    console.log(req.query.order);
     var trackingOrder=dbo.collection("order").find({"_id":ObjectId(req.query.order)}).toArray(function(err, result) {
       if (err) throw err;
-    res.send("You can recieve your order on: "+result[0].arrivalDate);
+    res.send(result[0]);
       db.close();
     });
 });

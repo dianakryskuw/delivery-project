@@ -22,6 +22,7 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-system": "^2.2.2",
     "google-map-react": "^0.32.0",
     "google-maps-react": "^1.1.2",
     "mongojs": "^2.4.1",

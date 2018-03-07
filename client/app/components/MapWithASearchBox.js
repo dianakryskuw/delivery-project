@@ -23,7 +23,12 @@ export default class RenderMap extends React.Component{
         counter:0
       }
   func (e){
-    current_location={lat:e.latLng.lat(), lng:e.latLng.lng()}
+    const nextMarkers ={lat:e.latLng.lat(), lng:e.latLng.lng()};
+    this.setState({
+        center: nextCenter,
+        markers: nextMarkers,
+      });
+    //current_location={lat:e.latLng.lat(), lng:e.latLng.lng()}
     let count = this.state.counter;
     count+=1;
     if(count==1){
@@ -52,7 +57,7 @@ render(){
         lifecycle({
           componentWillMount() {
             const refs = {}
-      
+            const refs2 = {};
             this.setState({
               bounds: null,
               center: {
@@ -61,6 +66,7 @@ render(){
               markers: [],
               onMapMounted: ref => {
                 refs.map = ref;
+                refs2.map = ref;
               },
               onBoundsChanged: () => {
                 this.setState({
@@ -68,10 +74,13 @@ render(){
                   center: refs.map.getCenter(),
                 })
               },
-              onSearchBoxMounted: ref => {
+              onSearchBoxFromMounted: ref => {
                 refs.searchBox = ref;
               },
-              onPlacesChanged: () => {
+              onSearchBoxToMounted: ref => {
+                refs2.searchBox = ref;
+              },
+              onPlacesFromChanged: () => {
                 const places = refs.searchBox.getPlaces();
                 const bounds = new google.maps.LatLngBounds();
       
@@ -92,6 +101,27 @@ render(){
                   });
                   // refs.map.fitBounds(bounds);
                 },
+                onPlacesToChanged: () => {
+                    const places = refs2.searchBox.getPlaces();
+                    const bounds = new google.maps.LatLngBounds();
+          
+                    places.forEach(place => {
+                      if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport)
+                      } else {
+                        bounds.extend(place.geometry.location)
+                      }
+                    });
+                    const nextMarkers = places.map(place => ({
+                      position: place.geometry.location,
+                    }));
+                    const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+                    this.setState({
+                        center: nextCenter,
+                        markers: nextMarkers,
+                      });
+                      // refs.map.fitBounds(bounds);
+                    },
               })
             },
           }),
@@ -106,10 +136,10 @@ render(){
             onClick={this.func}
           >
             <SearchBox
-              ref={props.onSearchBoxMounted}
+              ref={props.onSearchFromBoxMounted}
               bounds={props.bounds}
               controlPosition={google.maps.ControlPosition.TOP_LEFT}
-              onPlacesChanged={props.onPlacesChanged}
+              onPlacesChanged={props.onPlacesFromChanged}
             >
               <input
                 type="text"
@@ -130,10 +160,10 @@ render(){
               />
             </SearchBox>
             <SearchBox
-              ref={props.onSearchBoxMounted}
+              ref={props.onSearchBoxToMounted}
               bounds={props.bounds}
               controlPosition={google.maps.ControlPosition.TOP_RIGHT}
-              onPlacesChanged={props.onPlacesChanged}
+              onPlacesChanged={props.onPlacesToChanged}
             >
               <input
                 type="text"
