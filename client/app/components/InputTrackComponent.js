@@ -15,7 +15,10 @@ export default class InputTrackComponent extends React.Component{
         axios.get('/trackorder', {params: {
                 order: document.getElementById("inpt").value
               }}).then(function (response) {
-                pr.inputSent(response.data.departure_point,response.data.arrival_point)
+                  if (response.data.departure_point)
+                    pr.inputSent(response.data.departure_point,response.data.arrival_point);
+                else
+                    alert("Please, input valid track code");
               });
         }	
     render(){	

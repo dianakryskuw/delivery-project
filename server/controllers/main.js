@@ -49,7 +49,6 @@ var carScheme = new Schema({
   var my_id=new ObjectId();
   var curr_date=new Date(Date.now());
   var arr_date=new Date(Date.now());
-  var dist = 100;
   dbo.collection("order").insert(
     {
       "_id":my_id,
@@ -57,16 +56,16 @@ var carScheme = new Schema({
       {
         "lat":request.body.from_lat,
         "lng":request.body.from_lng,
-        "address":"address"
+        "address":request.body.from_adr
       },
       "arrival_point":
       {
         "lat":request.body.to_lat,
         "lng":request.body.to_lng,
-        "address":"address"
+        "address":request.body.to_adr
       },
-      "time":100,
-      "distance":dist,
+      "time":request.body.duration,
+      "distance":request.body.distance,
       "price":200,
       "date":curr_date,
       "arrivalDate":null,
@@ -87,11 +86,17 @@ var carScheme = new Schema({
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("delivery");
-    var trackingOrder=dbo.collection("order").find({"_id":ObjectId(req.query.order)}).toArray(function(err, result) {
+    try{
+      var oId=ObjectId(req.query.order);
+    var trackingOrder=dbo.collection("order").find({"_id":oId}).toArray(function(err, result) {
     if (err) throw err;
     res.send(result[0]);
     db.close();
     });
+    }
+    catch(e){
+        res.send(e);
+    }
 });
 });
 
