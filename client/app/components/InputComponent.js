@@ -8,7 +8,6 @@ export default class InputComponent extends React.Component{
       points:this.props.points
     }
     render(){
-      console.log(this.props);
     return <form action="/addorder" method="post">
      
      <div class=" read-only">    
@@ -44,7 +43,7 @@ export default class InputComponent extends React.Component{
     </div>
 
 		<div class="read-only">      
-      <input type="text" id="inpt5" className="read-only-inpt" name="to_adr" required readOnly />
+      <input type="text" id="inpt5" className="read-only-inpt" name="from_adr" required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
@@ -63,6 +62,12 @@ export default class InputComponent extends React.Component{
       <span class="bar"></span>
     </div>	
 
+    <div class="read-only">      
+      <input type="text" id="inpt7" className="read-only-inpt" name="distance" required readOnly />
+      <input type="text" id="inpt8" className="read-only-inpt" name="duration" required readOnly />
+      <span class="highlight"></span>
+      <span class="bar"></span>
+    </div>	
 
 	<div class="button-container">
     <input id="submit-btn" type="submit" value="Submit" />

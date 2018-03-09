@@ -6,6 +6,7 @@ const {
   withGoogleMap,
   GoogleMap,
   Marker,
+  DirectionsRenderer
 } = require("react-google-maps");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 
@@ -32,8 +33,8 @@ render(){
           center: {
             lat: 49.84075020419229, lng: 24.030532836914062
           },
-          marker1: [],
-          marker2: [],
+          marker1: {},
+          marker2: {},
           address1:[],
           address2:[],
           onMapMounted: ref => {
@@ -67,8 +68,28 @@ render(){
                   }
                 }
             });
+            if(this.state.marker1.position!=undefined)
+            {
+              const DirectionsService = new google.maps.DirectionsService();
+          
+              DirectionsService.route({
+                origin: new google.maps.LatLng(+this.state.marker1.position.lat(), +this.state.marker1.position.lng()),
+                destination: new google.maps.LatLng(+this.state.marker2.position.lat(), +this.state.marker2.position.lng()),
+                travelMode: google.maps.TravelMode.DRIVING,
+              }, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                  this.setState({
+                    directions: result,
+                  });
+                  document.getElementById('inpt7').value=result.routes[0].legs[0].distance.text;
+                  document.getElementById('inpt8').value=result.routes[0].legs[0].duration.text;
+                } else {
+                  alert("Can''t create route, please check your map data");
+                }
+              });
             document.getElementById('inpt1').value=this.state.marker1 != undefined ? this.state.marker1.position.lat() : "";
             document.getElementById('inpt2').value=this.state.marker1 != undefined ? this.state.marker1.position.lng() : "";
+            }
             document.getElementById('inpt3').value=this.state.marker2 != undefined ? this.state.marker2.position.lat() : "";
             document.getElementById('inpt4').value=this.state.marker2 != undefined ? this.state.marker2.position.lng() : "";
           },
@@ -129,8 +150,9 @@ render(){
           }}
         />
       </SearchBox>
-        <Marker label="From" position={props.marker1.position} />
-        <Marker label="To" position={props.marker2.position} />
+        {props.marker1 && <Marker label="From" position={props.marker1.position} />}
+        {props.marker2 &&  <Marker label="To" position={props.marker2.position} />}
+        {props.directions && <DirectionsRenderer directions={props.directions} />}
     </GoogleMap>
   );
         

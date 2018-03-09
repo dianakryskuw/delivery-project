@@ -7,7 +7,7 @@ import AddingComponent from './components/AddingComponent';
 
 export default () =>(
 <BrowserRouter>
-<div>
+<div className="home">
   <MuiThemeProvider>
     <div className="top">
 	<FlatButton className="my-button"><Link to='/add' className="my-link">Add order</Link></FlatButton>
