@@ -1,14 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class InputComponent extends React.Component{
+class InputComponent extends React.Component{
 	constructor(props){
-		super(props);
+    super(props);
     }
-    state={
-      points:this.props.points
-    }
+
     render(){
-    return <form action="/addorder" method="post">
+    return <form action="addorder" method="post">
      
      <div class=" read-only">    
       <h1 className="read-only-inpt">Order information</h1>
@@ -36,35 +35,35 @@ export default class InputComponent extends React.Component{
     </div>
 
 	<div class="read-only">      
-      <input type="text" id="inpt1" className="read-only-inpt" name="from_lat" required readOnly />
-      <input type="text" id="inpt2" className="read-only-inpt" name="from_lng" required readOnly />
+      <input type="text" className="read-only-inpt" name="from_lat"  value={this.props.data.from?this.props.data.from.lat:''} required readOnly />
+      <input type="text" className="read-only-inpt" name="from_lng" value={this.props.data.from?this.props.data.from.lng:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
 
 		<div class="read-only">      
-      <input type="text" id="inpt5" className="read-only-inpt" name="from_adr" required readOnly />
+      <input type="text" className="read-only-inpt" name="from_adr" value={this.props.data.from?this.props.data.from.address:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
 
 		<div class="read-only">      
-      <input type="text" id="inpt3" className="read-only-inpt" name="to_lat" required readOnly />
-      <input type="text" id="inpt4" className="read-only-inpt" name="to_lng" required readOnly />
+      <input type="text" className="read-only-inpt" name="to_lat" value={this.props.data.to?this.props.data.to.lat:''} required readOnly />
+      <input type="text" className="read-only-inpt" name="to_lng" value={this.props.data.to?this.props.data.to.lng:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
 
 
 		<div class="read-only">      
-      <input type="text" id="inpt6" className="read-only-inpt" name="to_adr" required readOnly />
+      <input type="text" className="read-only-inpt" name="to_adr" value={this.props.data.to?this.props.data.to.address:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>	
 
     <div class="read-only">      
-      <input type="text" id="inpt7" className="read-only-inpt" name="distance" required readOnly />
-      <input type="text" id="inpt8" className="read-only-inpt" name="duration" required readOnly />
+      <input type="text" className="read-only-inpt" name="distance" value={this.props.data.distance?this.props.data.distance.text:''} required readOnly />
+      <input type="text" className="read-only-inpt" name="duration" value={this.props.data.time?this.props.data.time.text:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>	
@@ -75,3 +74,10 @@ export default class InputComponent extends React.Component{
   </form>;
     }
 }
+export default connect(
+  state => ({
+    data:state
+  }),
+  dispatch => ({
+  })
+)(InputComponent);

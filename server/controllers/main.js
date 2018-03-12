@@ -64,8 +64,15 @@ var carScheme = new Schema({
         "lng":request.body.to_lng,
         "address":request.body.to_adr
       },
-      "time":request.body.duration,
-      "distance":request.body.distance,
+      "time": {
+        "text":request.body.duration,
+        "value":request.body.duration_v
+      },
+      "distance":
+      {
+        "text":request.body.distance,
+        "value":request.body.distance_v
+      },
       "price":200,
       "date":curr_date,
       "arrivalDate":null,

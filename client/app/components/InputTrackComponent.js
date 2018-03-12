@@ -16,7 +16,7 @@ export default class InputTrackComponent extends React.Component{
                 order: document.getElementById("inpt").value
               }}).then(function (response) {
                   if (response.data.departure_point)
-                    pr.inputSent(response.data.departure_point,response.data.arrival_point);
+                    pr.inputSent(response.data.departure_point,response.data.arrival_point, response.data.arrivalDate);
                 else
                     alert("Please, input valid track code");
               });

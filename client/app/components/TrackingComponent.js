@@ -12,16 +12,23 @@ export default class TrackingComponent extends React.Component{
           from:{},
           to:{}
       } 
-      inputSent (point1, point2){
-        this.setState({from: point1})
-        this.setState({to: point2})
+      inputSent (point1, point2,date){
+        this.setState({
+            from: point1,
+            to: point2,
+            arrive: date
+        })
     }
     render(){	
         return(
         <div>
         <div className="input-trackdata-container">
             <InputTrackComponent inputSent={this.inputSent}/>
-        </div>
+        </div> 
+        <h1 style={{
+            display: this.state.arrive ? 'block' : 'none'
+        }}
+        >{"Your order arrives "+this.state.arrive||""}</h1>
         <div className="track-map-container">
             <DirectionComponent origin={this.state.from} destination={this.state.to}/>
         </div>
