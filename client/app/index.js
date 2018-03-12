@@ -8,17 +8,5 @@ import HomePage from 'components/home';
 
 ReactDOM.render(
  <Routes />,
- document.getElementById('app')
+ document.getElementById('root')
 );
-
-/*
-render(
-  <form action="/" method="post">
-	<input type="text" name="item_name" />
-	<input type="number" name="item_weight" />
-	<input type="text" name="email" />
-    <input type="submit" value="Submit" />
-  </form> ,
-   document.getElementById('app')
-);
-*/

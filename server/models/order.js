@@ -11,8 +11,14 @@ var orderSchema = new Schema({
       lng: Number,
       address: String
     },
-    time: Number,
-    distance: Number,
+    time:{
+        text: String,
+        value: Number
+    },
+    distance: {
+        text: String,
+        value: Number
+    },
     price: Number,
     date:Date,
     arrivalDate: Date,
