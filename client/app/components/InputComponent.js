@@ -93,7 +93,5 @@ class InputComponent extends React.Component{
 export default connect(
   state => ({
     data:state
-  }),
-  dispatch => ({
   })
 )(InputComponent);

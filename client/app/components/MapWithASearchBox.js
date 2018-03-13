@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import MapAttachment from './MapAttachment';
 const _ = require("lodash");
 const { compose, withProps, lifecycle } = require("recompose");
 const {
@@ -36,9 +37,7 @@ render(){
           },
           marker1: {},
           marker2: {},
-          address1:'',
-          address2:'',
-          currentAddress:'',
+          directions:{},
           onMapMounted: ref => {
             refs.map = ref;
           },
@@ -54,77 +53,50 @@ render(){
           onMapClick:(e)=>{
             const nextMarker = {position: e.latLng}
             const nextCenter = _.get(nextMarker, '0.position', this.state.center);
+
             this.setState({
               center: nextCenter,
               marker1:this.state.marker2,
               marker2:nextMarker
             })
-
-             var mapData={};
-            if(this.state.marker1.position)
-            {
+            if(this.state.marker1.position){
               const DirectionsService = new google.maps.DirectionsService();
               DirectionsService.route({
                 origin: new google.maps.LatLng(+this.state.marker1.position.lat(), +this.state.marker1.position.lng()),
                 destination: new google.maps.LatLng(+this.state.marker2.position.lat(), +this.state.marker2.position.lng()),
                 travelMode: google.maps.TravelMode.DRIVING,
               }, (result, status) => {
-                if (status === google.maps.DirectionsStatus.OK) {
+                if (status === google.maps.DirectionsStatus.OK) {   
                   this.setState({
                     directions: result,
                   });
-                  mapData={
-                    from: mapData.from,
-                    to: mapData.to,
-                    distance:{
-                      text: this.state.directions && this.state.directions.routes[0].legs[0].distance.text,
-                      value: this.state.directions && this.state.directions.routes[0].legs[0].distance.value
-                    },
-                    time:{
-                      text: this.state.directions && this.state.directions.routes[0].legs[0].duration.text,
-                      value: this.state.directions && this.state.directions.routes[0].legs[0].duration.value
-                    }
-                  }
-                  this.props.onLocationClick(mapData);
-                      
-                } else {
+                  this.props.getMapAddress(result);
+                } 
+                else {
                   alert("Can''t create route, please check your map data");
                 }
               });
             }
-
+            else{
+            
             var geocoder = new google.maps.Geocoder();
               geocoder.geocode({
                 'latLng': e.latLng
               }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                   if (results[0]) {
-                     this.setState({
-                address1:this.state.address2,
-                address2:results[0].formatted_address
-            });   
-            mapData={
-              from:{
-                lat : this.state.marker1.position && this.state.marker1.position.lat(),
-                lng : this.state.marker1.position && this.state.marker1.position.lng(),
-                address: this.state.address1
-              },
-              to:{
-                lat : this.state.marker2.position && this.state.marker2.position.lat(),
-                lng : this.state.marker2.position && this.state.marker2.position.lng(),
-                address: this.state.address2,
-              },
-              distance:mapData.distance,
-              time:mapData.time
-            }
-
-            this.props.onLocationClick(mapData);
-              }
-            }
+                    let addressData={
+                      lat:e.latLng.lat(),
+                      lng:e.latLng.lng(),
+                      address:results[0].formatted_address
+                    }
+                  this.props.getClick(addressData);
+                  }
+                }
             }.bind(this));
-          
-          
+          }
           },
+
           onPlacesChanged: () => {
             const places = refs.searchBox.getPlaces();
             const bounds = new google.maps.LatLngBounds();
@@ -181,22 +153,23 @@ render(){
           }}
         />
       </SearchBox>
-        {props.marker1 && <Marker label="From" position={props.marker1.position} />}
-        {props.marker2 &&  <Marker label="To" position={props.marker2.position} />}
-        {props.directions && <DirectionsRenderer directions={props.directions} />}
+      <MapAttachment />
     </GoogleMap>
   );
         
       
-      return (<MapWithASearchBox onLocationClick={this.props.onLocationClick} />);
+      return (<MapWithASearchBox getMapAddress={this.props.getMapAddress} getClick={this.props.getClick} />);
 }
 };
 export default connect(
   state => ({
   }),
   dispatch => ({
-    onLocationClick: (currentData) => {
+    getMapAddress: (currentData) => {
       dispatch({ type: '1', payload: currentData })
+    }, 
+    getClick: (currentData) => {
+      dispatch({ type: '2', payload: currentData })
     }
   })
 )(MapWithASearchBox);
