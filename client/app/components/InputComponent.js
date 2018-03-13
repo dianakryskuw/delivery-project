@@ -66,6 +66,22 @@ class InputComponent extends React.Component{
       <input type="text" className="read-only-inpt" name="duration" value={this.props.data.time?this.props.data.time.text:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
+    </div>
+
+    
+    <div class="read-only">      
+      <input type="text" className="read-only-inpt" name="distance_v" 
+      style={{
+        display: 'none'
+      }} 
+      value={this.props.data.distance?this.props.data.distance.value:''} required readOnly />
+      <input type="text" className="read-only-inpt" name="duration_v"
+      style={{
+        display: 'none'
+      }} 
+       value={this.props.data.time?this.props.data.time.value:''} required readOnly />
+      <span class="highlight"></span>
+      <span class="bar"></span>
     </div>	
 
 	<div class="button-container">
@@ -77,7 +93,5 @@ class InputComponent extends React.Component{
 export default connect(
   state => ({
     data:state
-  }),
-  dispatch => ({
   })
 )(InputComponent);
