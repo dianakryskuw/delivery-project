@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MapAttachment from './MapAttachment';
+import { addDirectionData, addAddressData } from '../actions/mapActions';
 const _ = require("lodash");
 const { compose, withProps, lifecycle } = require("recompose");
 const {
@@ -53,7 +54,6 @@ render(){
           onMapClick:(e)=>{
             const nextMarker = {position: e.latLng}
             const nextCenter = _.get(nextMarker, '0.position', this.state.center);
-
             this.setState({
               center: nextCenter,
               marker1:this.state.marker2,
@@ -73,12 +73,26 @@ render(){
                   this.props.getMapAddress(result);
                 } 
                 else {
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                    'latLng': e.latLng
+                  }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                      if (results[0]) {
+                        let addressData={
+                          lat:e.latLng.lat(),
+                          lng:e.latLng.lng(),
+                          address:results[0].formatted_address
+                        }
+                      this.props.getClick(addressData);
+                      }
+                    }
+                }.bind(this));
                   alert("Can''t create route, please check your map data");
                 }
               });
             }
             else{
-            
             var geocoder = new google.maps.Geocoder();
               geocoder.geocode({
                 'latLng': e.latLng
@@ -166,10 +180,10 @@ export default connect(
   }),
   dispatch => ({
     getMapAddress: (currentData) => {
-      dispatch({ type: '1', payload: currentData })
+      dispatch(addDirectionData(currentData))
     }, 
     getClick: (currentData) => {
-      dispatch({ type: '2', payload: currentData })
+      dispatch(addAddressData(currentData))
     }
   })
 )(MapWithASearchBox);

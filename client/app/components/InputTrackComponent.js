@@ -1,26 +1,20 @@
 import React from 'react';
-import axios from 'axios';
 import DirectionComponent from './DirectionComponent';
+import { connect } from 'react-redux';
+import { assyncGet } from '../actions/trackActions.js'
 
-export default class InputTrackComponent extends React.Component{
+class InputTrackComponent extends React.Component{
     constructor(props){
         super(props);
         this.getData=this.getData.bind(this);
       }
-    state={
-        data:[]
-    }
+
+      val=''
+
     getData(){
-        var pr=this.props;
-        axios.get('/trackorder', {params: {
-                order: document.getElementById("inpt").value
-              }}).then(function (response) {
-                  if (response.data.departure_point)
-                    pr.inputSent(response.data.departure_point,response.data.arrival_point, response.data.arrivalDate);
-                else
-                    alert("Please, input valid track code");
-              });
-        }	
+        this.props.trackData(this.val);
+    }
+    
     render(){	
         return(
             <div className="track-inpt">
@@ -28,7 +22,7 @@ export default class InputTrackComponent extends React.Component{
       <h1 className="read-only-inpt">Track your order</h1>
     </div>
         <div class="group">      
-            <input type="text" id="inpt" name="order" required />
+            <input type="text" onChange={(e)=>this.val=e.target.value} required />
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Track Code</label>
@@ -39,3 +33,13 @@ export default class InputTrackComponent extends React.Component{
     </div>)
     }
 }
+
+export default connect(
+    state => ({
+    }),
+    dispatch => ({
+      trackData: (currentData) => {
+          dispatch(assyncGet(currentData));
+      }
+    })
+  )(InputTrackComponent);

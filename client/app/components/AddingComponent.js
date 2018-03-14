@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import InputComponent from './InputComponent';
 import MapWithASearchBox from './MapWithASearchBox';
+import { addNewOrder } from '../actions/orderActions';
 
-export default class AddingComponent extends React.Component{
+class AddingComponent extends React.Component{
     constructor(props){
         super(props);
       }
@@ -10,6 +12,9 @@ export default class AddingComponent extends React.Component{
     render(){
     return (
     <div> 
+        <h1 style={{
+            display: this.props.data.orderId ? 'block' : 'none'
+        }}>{"Your track code "+this.props.data.orderId||""}</h1>
         <div className="map-container">
             <MapWithASearchBox/>
         </div>
@@ -20,3 +25,13 @@ export default class AddingComponent extends React.Component{
         );
     }
 }
+export default connect(
+    state => ({
+        data:state.orderReducer
+    }),
+    dispatch => ({
+        orderAdded: ({}) => {
+            dispatch(resetInput({}));
+        }
+    })
+  )(AddingComponent);

@@ -13,10 +13,13 @@ var orderScheme = new Schema({
       address: String
     },
     time: {
-    text: String,
-    value: Number
-  },
-    distance: Number,
+      text: String,
+      value: Number
+    },
+    distance: {
+      text: String,
+      value: Number
+    },
     price: Number,
     date:Date,
     arrivalDate: { type: Date, default: null },
