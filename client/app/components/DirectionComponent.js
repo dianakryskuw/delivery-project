@@ -8,13 +8,14 @@ const {
   Marker,
   DirectionsRenderer
 } = require("react-google-maps");
+import { connect } from 'react-redux';
 
-export default class RenderMap extends React.Component{
+class DirectionComponent extends React.Component{
     constructor(props){
       super(props);
     }
 render(){
-  console.log(this.props);
+  var data = this.props.data.trackReducer;
     const MapWithASearchBox = compose(
         withProps({
           googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAoT2e9ISl-I6CU8tBpxzo0MFAEpka8Wc4&libraries=geometry,drawing,places",
@@ -26,11 +27,12 @@ render(){
         withGoogleMap,
         lifecycle({
             componentDidMount() {
+              if(data.departure_point){
                 const DirectionsService = new google.maps.DirectionsService();
           
                 DirectionsService.route({
-                  origin: new google.maps.LatLng(+this.props.or.lat, +this.props.or.lng),
-                  destination: new google.maps.LatLng(+this.props.des.lat, +this.props.des.lng),
+                  origin: new google.maps.LatLng(data.departure_point.lat, data.departure_point.lng),
+                  destination: new google.maps.LatLng(data.arrival_point.lat, data.arrival_point.lng),
                   travelMode: google.maps.TravelMode.DRIVING,
                 }, (result, status) => {
                   if (status === google.maps.DirectionsStatus.OK) {
@@ -41,6 +43,7 @@ render(){
                     console.error(`error fetching directions ${result}`);
                   }
                 });
+              }
               },
           })
         )(props =>
@@ -53,7 +56,12 @@ render(){
         );
         
       
-      return (<MapWithASearchBox or={this.props.origin}
-                                 des={this.props.destination}/>);
+      return (<MapWithASearchBox data={this.props.data} />);
 }
 };
+
+export default connect(
+  state => ({
+    data: state
+  })
+)(DirectionComponent);

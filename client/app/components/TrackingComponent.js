@@ -1,24 +1,13 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import DirectionComponent from './DirectionComponent';
 import InputTrackComponent from './InputTrackComponent';
 
-export default class TrackingComponent extends React.Component{
+class TrackingComponent extends React.Component{
     constructor(props){
         super(props);
-        this.inputSent=this.inputSent.bind(this);
       }
-      state={
-          from:{},
-          to:{}
-      } 
-      inputSent (point1, point2,date){
-        this.setState({
-            from: point1,
-            to: point2,
-            arrive: date
-        })
-    }
+
     render(){	
         return(
         <div>
@@ -26,12 +15,17 @@ export default class TrackingComponent extends React.Component{
             <InputTrackComponent inputSent={this.inputSent}/>
         </div> 
         <h1 style={{
-            display: this.state.arrive ? 'block' : 'none'
+            display: this.props.data.trackReducer.arrivalDate ? 'block' : 'none'
         }}
-        >{"Your order arrives "+this.state.arrive||""}</h1>
+        >{"Your order arrives "+this.props.data.trackReducer.arrivalDate||""}</h1>
         <div className="track-map-container">
-            <DirectionComponent origin={this.state.from} destination={this.state.to}/>
+            <DirectionComponent/>
         </div>
     </div>)
     }
 }
+export default connect(
+    state => ({
+      data: state
+    })
+  )(TrackingComponent);

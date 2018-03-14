@@ -5,19 +5,18 @@ const {
   DirectionsRenderer
 } = require("react-google-maps");
 
-
-
 class MapAttachment extends React.Component{
 	constructor(props){
     super(props);
     }
 
     render(){
+    var data = this.props.data.mapReducer;
     return(
     <div>
-        <Marker label="From" position={this.props.data.from} />
-        <Marker label="To" position={this.props.data.to} />
-        <DirectionsRenderer directions={this.props.data.direction} />
+        <Marker label="From" position={data.from} />
+        <Marker label="To" position={data.to} />
+        <DirectionsRenderer directions={data.direction} />
     </div>)
     }
 }
