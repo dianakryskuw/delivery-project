@@ -27,9 +27,9 @@ export default function setMapData(state=initialState, action) {
         var data=action.addData;
         return { 
                 to: {
-                    lat:data.lat,
-                    lng:data.lng,
-                    address:data.address,
+                    lat:data&&data.lat,
+                    lng:data&&data.lng,
+                    address:data&&data.address,
                  }
             }
         }

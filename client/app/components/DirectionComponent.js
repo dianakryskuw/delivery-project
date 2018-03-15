@@ -29,7 +29,6 @@ render(){
             componentDidMount() {
               if(data.departure_point){
                 const DirectionsService = new google.maps.DirectionsService();
-          
                 DirectionsService.route({
                   origin: new google.maps.LatLng(data.departure_point.lat, data.departure_point.lng),
                   destination: new google.maps.LatLng(data.arrival_point.lat, data.arrival_point.lng),

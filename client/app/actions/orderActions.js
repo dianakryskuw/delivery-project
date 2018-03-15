@@ -6,7 +6,8 @@ export function addNewOrder(currentData){
         }
     ).then(function (response) {
       if (response.data){
-          dispatch({ type: 'ADD', payload: response.data
+          dispatch({ 
+              type: 'ADD', payload: response.data
           })
       }
       else

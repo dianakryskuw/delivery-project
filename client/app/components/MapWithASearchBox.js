@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MapAttachment from './MapAttachment';
 import { addDirectionData, addAddressData } from '../actions/mapActions';
+import getGeoLocation from '../helpers/geoLocation';
+import buildDirection from '../helpers/directionBuilder';
 const _ = require("lodash");
 const { compose, withProps, lifecycle } = require("recompose");
 const {
@@ -12,7 +14,7 @@ const {
   DirectionsRenderer
 } = require("react-google-maps");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
-
+var Promise = require('promise');
 
 class MapWithASearchBox extends React.Component{
   constructor(props){
@@ -60,54 +62,17 @@ render(){
               marker2:nextMarker
             })
             if(this.state.marker1.position){
-              const DirectionsService = new google.maps.DirectionsService();
-              DirectionsService.route({
-                origin: new google.maps.LatLng(+this.state.marker1.position.lat(), +this.state.marker1.position.lng()),
-                destination: new google.maps.LatLng(+this.state.marker2.position.lat(), +this.state.marker2.position.lng()),
-                travelMode: google.maps.TravelMode.DRIVING,
-              }, (result, status) => {
-                if (status === google.maps.DirectionsStatus.OK) {   
-                  this.setState({
-                    directions: result,
-                  });
-                  this.props.getMapAddress(result);
-                } 
-                else {
-                  var geocoder = new google.maps.Geocoder();
-                  geocoder.geocode({
-                    'latLng': e.latLng
-                  }, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                      if (results[0]) {
-                        let addressData={
-                          lat:e.latLng.lat(),
-                          lng:e.latLng.lng(),
-                          address:results[0].formatted_address
-                        }
-                      this.props.getClick(addressData);
-                      }
-                    }
-                }.bind(this));
-                  alert("Can''t create route, please check your map data");
+              buildDirection(this.state.marker1.position, this.state.marker2.position)
+              .then(
+                result=> this.props.getMapAddress(result),
+                error => {
+                  alert(error.message);
+                  getGeoLocation(e).then(result=>{ this.props.getClick(result)})
                 }
-              });
+               );
             }
             else{
-            var geocoder = new google.maps.Geocoder();
-              geocoder.geocode({
-                'latLng': e.latLng
-              }, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                  if (results[0]) {
-                    let addressData={
-                      lat:e.latLng.lat(),
-                      lng:e.latLng.lng(),
-                      address:results[0].formatted_address
-                    }
-                  this.props.getClick(addressData);
-                  }
-                }
-            }.bind(this));
+              getGeoLocation(e).then(result=>{ this.props.getClick(result) });
           }
           },
 
