@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addNewOrder } from '../actions/orderActions.js'
+import SearchComponent from './SearchToComponent.js';
 
 class InputComponent extends React.Component{
 	constructor(props){
@@ -12,8 +13,8 @@ class InputComponent extends React.Component{
       this.mapInfo = this.props.data.mapReducer,
       this.props.addOrderData(
         {
-          departure_point: this.mapInfo.from,
-          arrival_point: this.mapInfo.to,
+          departure_point: this.mapInfo.markers[0],
+          arrival_point: this.mapInfo.markers[1],
           distance: this.mapInfo.distance,
           time: this.mapInfo.time,
           email:this.email,
@@ -36,75 +37,52 @@ class InputComponent extends React.Component{
     </div>
 
 	 <div class="group">      
-      <input type="text" name="item_name" onChange={(e)=>this.item_name=e.target.value} required />
+      <input type="text" onChange={(e)=>this.item_name=e.target.value} required />
       <span class="highlight"></span>
       <span class="bar"></span>
       <label>Name</label>
     </div>
       
     <div class="group">      
-      <input min="1" type="number" name="item_weight"  onChange={(e)=>this.item_weight=e.target.value} required />
+      <input min="1" type="number" onChange={(e)=>this.item_weight=e.target.value} required />
       <span class="highlight"></span>
       <span class="bar"></span>
       <label>Weight</label>
     </div>
 
 	<div class="group">      
-      <input type="email" name="email" onChange={(e)=>this.email=e.target.value}  required />
+      <input type="email" onChange={(e)=>this.email=e.target.value}  required />
       <span class="highlight"></span>
       <span class="bar"></span>
       <label>Email</label>
     </div>
 
 	<div class="read-only">      
-      <input type="text" className="read-only-inpt" name="from_lat"  value={data.from?data.from.lat:''} required readOnly />
-      <input type="text" className="read-only-inpt" name="from_lng" value={data.from?data.from.lng:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={(data.markers&&data.markers[0])?data.markers[0].lat:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={(data.markers&&data.markers[0])?data.markers[0].lng:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
 
-		<div class="read-only">      
-      <input type="text" className="read-only-inpt" name="from_adr" value={data.from?data.from.address:''} required readOnly />
-      <span class="highlight"></span>
-      <span class="bar"></span>
-    </div>
+	
+  <SearchComponent text={(data.markers&&data.markers[0])?data.markers[0].address:''} type='From' required/>
 
 		<div class="read-only">      
-      <input type="text" className="read-only-inpt" name="to_lat" value={data.to?data.to.lat:''} required readOnly />
-      <input type="text" className="read-only-inpt" name="to_lng" value={data.to?data.to.lng:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={(data.markers&&data.markers[1])?data.markers[1].lat:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={(data.markers&&data.markers[1])?data.markers[1].lng:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
 
 
-		<div class="read-only">      
-      <input type="text" className="read-only-inpt" name="to_adr" value={data.to?data.to.address:''} required readOnly />
-      <span class="highlight"></span>
-      <span class="bar"></span>
-    </div>	
+    <SearchComponent text={(data.markers&&data.markers[1])?data.markers[1].address:''} type='To' required/>
 
     <div class="read-only">      
-      <input type="text" className="read-only-inpt" name="distance" value={data.distance?data.distance.text:''} required readOnly />
-      <input type="text" className="read-only-inpt" name="duration" value={data.time?data.time.text:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={data.distance?data.distance.text:''} required readOnly />
+      <input type="text" className="read-only-inpt" value={data.time?data.time.text:''} required readOnly />
       <span class="highlight"></span>
       <span class="bar"></span>
     </div>
-
-    
-    <div class="read-only">      
-      <input type="text" className="read-only-inpt" name="distance_v" 
-      style={{
-        display: 'none'
-      }} 
-      value={data.distance?data.distance.value:''} required readOnly />
-      <input type="text" className="read-only-inpt" name="duration_v"
-      style={{
-        display: 'none'
-      }} 
-       value={data.time?data.time.value:''} required readOnly />
-      <span class="highlight"></span>
-      <span class="bar"></span>
-    </div>	
 
 	<div class="button-container">
     <input id="submit-btn" type="submit" value="Submit" onClick={this.sendData} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MapAttachment from './MapAttachment';
-import { addDirectionData, addAddressData } from '../actions/mapActions';
+import { addDirectionData, addAddressData, addMarker } from '../actions/mapActions';
 import getGeoLocation from '../helpers/geoLocation';
 import buildDirection from '../helpers/directionBuilder';
 const _ = require("lodash");
@@ -38,8 +38,6 @@ render(){
           center: {
             lat: 49.84075020419229, lng: 24.030532836914062
           },
-          marker1: {},
-          marker2: {},
           directions:{},
           onMapMounted: ref => {
             refs.map = ref;
@@ -58,22 +56,8 @@ render(){
             const nextCenter = _.get(nextMarker, '0.position', this.state.center);
             this.setState({
               center: nextCenter,
-              marker1:this.state.marker2,
-              marker2:nextMarker
             })
-            if(this.state.marker1.position){
-              buildDirection(this.state.marker1.position, this.state.marker2.position)
-              .then(
-                result=> this.props.getMapAddress(result),
-                error => {
-                  alert(error.message);
-                  getGeoLocation(e).then(result=>{ this.props.getClick(result)})
-                }
-               );
-            }
-            else{
-              getGeoLocation(e).then(result=>{ this.props.getClick(result) });
-          }
+          this.props.getMarker(e);
           },
 
           onPlacesChanged: () => {
@@ -137,18 +121,15 @@ render(){
   );
         
       
-      return (<MapWithASearchBox getMapAddress={this.props.getMapAddress} getClick={this.props.getClick} />);
+      return (<MapWithASearchBox getMarker={this.props.getMarker} />);
 }
 };
 export default connect(
   state => ({
   }),
   dispatch => ({
-    getMapAddress: (currentData) => {
-      dispatch(addDirectionData(currentData))
-    }, 
-    getClick: (currentData) => {
-      dispatch(addAddressData(currentData))
+    getMarker: (m) => {
+      dispatch(addMarker(m))
     }
   })
 )(MapWithASearchBox);

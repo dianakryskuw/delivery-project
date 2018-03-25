@@ -12,6 +12,7 @@
   font-size: large;
   font-weight: 500;
   width:100%;
+  height:100px;
 }
 .my-button{
   padding: 5%;
@@ -21,10 +22,10 @@
 }
 .top{
   width: 100%;
-  height: 50px;
+  height: 100px;
   margin: 0%;
   padding: 0%;
-  background-color: rgb(3, 19, 63);
+  background-color: rgb(68, 63, 82);
   text-align: center;
 }
 .map-container{
@@ -33,7 +34,7 @@
   margin-top: 4%;
   padding: 1%;
   width:60%;
-  background-color: rgb(3, 19, 63);
+  background-color: rgb(255, 255, 255);
   float: left;
 }
 .input-data-container{
@@ -44,7 +45,7 @@
   display: block;
   float: right;
   text-align: center;
-  background-color: rgb(3, 19, 63);
+  background-color: rgb(255, 255, 255);
 }
 .input-trackdata-container{
   margin-top: 1%;
@@ -55,7 +56,7 @@
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  background-color: rgb(3, 19, 63);
+  background-color:  rgb(255, 255, 255);
 }
 .track-map-container{
   margin-top: 1%;
@@ -63,7 +64,7 @@
   margin-right: auto;
   padding: 1%;
   width:80%;
-  background-color: rgb(3, 19, 63);
+  background-color: rgb(255, 255, 255);
 }
 .track-inpt{
   margin-top: 0;
@@ -74,7 +75,7 @@
 }
 form{
   text-align: center;
-  background-color: rgb(3, 19, 63);
+  background-color: rgb(255, 255, 255);
 }
 
 * { box-sizing:border-box; }
@@ -112,7 +113,7 @@ h2 small {
 .read-only-inpt{
   background-color: transparent;
   width:100%;
-  color:rgb(195, 237, 245);
+  color:rgb(24, 82, 94);
 }
 .group 			  { 
   position:relative; 
@@ -150,7 +151,7 @@ label 				 {
 input:focus ~ label, input:valid ~ label 		{
   top:-45%;
   font-size:16px;
-  color:rgb(195, 237, 245);
+  color:rgb(24, 82, 94);
 }
 
 /* BOTTOM BARS ================================= */
