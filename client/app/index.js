@@ -15,7 +15,7 @@ const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 console.log(store.getState())
 ReactDOM.render(
 <Provider store={store}>
-    <Routes />
+    <Routes/>
 </Provider>,
  document.getElementById('root')
 );

@@ -8,9 +8,7 @@ export default function getGeoLocation(e){
         'latLng': e.latLng
         }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                console.log('///////////////////////');
                 if (results[0]) {
-                    console.log('*************************************');
                     addressData={
                     lat:e.latLng.lat(),
                     lng:e.latLng.lng(),
