@@ -21,6 +21,13 @@ export default function setMapData(state=initialState, action) {
                      direction: state.direction
                 }
             } 
+            case 'addBounds':{
+                var data=action.payload;
+                return {
+                    bounds:data.bounds
+                }
+
+                } 
             case 'addFromAddress':{
                 var data=action.payload;
                 var d=state.markers||[]

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addDirectionData, addAddressData, addAddress, addToAddress } from '../actions/mapActions';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import { addAddress } from '../actions/mapActions';
+import PlacesAutocomplete from 'react-places-autocomplete'
  
 class SearchComponent extends React.Component {
   constructor(props) {
