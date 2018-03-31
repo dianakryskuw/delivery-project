@@ -16,7 +16,7 @@ class MapAttachment extends React.Component{
     return(
     <div>
         <Marker label="From" position={data.markers&&data.markers[0]&&data.markers[0]} draggable={true} onClick={() => this.props.getRoute(data.markers[0],data.markers[1])} />
-        <Marker label="To" position={data.markers&&data.markers[1]&&data.markers[1]} draggable={true}/>
+        <Marker label="To" position={data.markers&&data.markers[1]&&data.markers[1]} draggable={true} onClick={() => this.props.getRoute(data.markers[0],data.markers[1])}/>
         <DirectionsRenderer directions={data.direction} />
     </div>)
     }

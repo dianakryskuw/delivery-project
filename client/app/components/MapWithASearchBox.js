@@ -121,7 +121,7 @@ render(){
   );
         
       
-      return (<MapWithASearchBox getMarker={this.props.getMarker} />);
+      return (<MapWithASearchBox getMarker={this.props.getMarker}/>);
 }
 };
 export default connect(

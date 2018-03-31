@@ -3,12 +3,8 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import getGeoLocation from '../helpers/geoLocation';
 import buildDirection from '../helpers/directionBuilder';
 
-export function addDirectionData(dirData) {
-    return { type: 'addDirectionData', dirData }
-  }
-export function  addAddressData(addData) {
-    return { type: 'addAddressData', addData }
-  }
+const _ = require("lodash");
+
 export function  resetInput(addData) {
     return { type: 'RESET', addData }
   }
@@ -68,30 +64,17 @@ export function  addAddress(addr,mytype) {
     geocodeByAddress(addr)
     .then(results => getLatLng(results[0]))
     .then(latLng => { 
-      dispatch({ 
-        type: 'add'+mytype+'Address', payload:{
-          address:addr,
-          lat:latLng.lat, 
-          lng:latLng.lng
-        }  
-      })
-    })
-    .catch(error => console.error('Error', error))
-  }
-}
+      var payload = {
+        address:addr,
+        lat:latLng.lat, 
+        lng:latLng.lng
+      };
 
-export function  addFromAddress(addr) {
-  return dispatch =>{
-    geocodeByAddress(addr)
-    .then(results => getLatLng(results[0]))
-    .then(latLng => { 
-      dispatch({ 
-        type: 'addFromAddress', payload:{
-          address:addr,
-          lat:latLng.lat, 
-          lng:latLng.lng
-        }  
-      })
+      if(mytype == 'From'){
+        dispatch({type: 'addFromAddress', payload})
+      } else if(mytype == 'To'){
+        dispatch({type: 'addToAddress', payload})
+      }
     })
     .catch(error => console.error('Error', error))
   }

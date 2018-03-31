@@ -10,8 +10,8 @@ export default () =>(
 <div className="home">
   <MuiThemeProvider>
     <div className="top">
-	<FlatButton style={{height:'100px'}} className="my-button"><Link to='/add' className="my-link">Add order</Link></FlatButton>
-	<FlatButton style={{height:'100px'}} className="my-button"><Link to='/track' className="my-link">Track order</Link></FlatButton>
+	<Link to='/add' className="my-link"><FlatButton style={{height:'100px',color:'rgb(192, 231, 243)'}} className="my-button">Add order</FlatButton></Link>
+	<Link to='/track' className="my-link"><FlatButton style={{height:'100px',color:'rgb(192, 231, 243)'}} className="my-button">Track order</FlatButton></Link>
     </div>
     </MuiThemeProvider>
     <Switch>
