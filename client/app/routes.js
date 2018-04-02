@@ -16,7 +16,8 @@ export default () =>(
     </MuiThemeProvider>
     <Switch>
         <Route path="/add" exact component={AddingComponent} />
-        <Route path="/track" exact component={TrackingComponent} />
+        <Route path='/track'  component={TrackingComponent} />
+        <Route path='/track/:id'  component={TrackingComponent} />
     </Switch>
     </div>
 </BrowserRouter>

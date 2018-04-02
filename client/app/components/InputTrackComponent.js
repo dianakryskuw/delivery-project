@@ -1,5 +1,4 @@
 import React from 'react';
-import DirectionComponent from './DirectionComponent';
 import { connect } from 'react-redux';
 import { assyncGet } from '../actions/trackActions.js'
 
@@ -7,9 +6,8 @@ class InputTrackComponent extends React.Component{
     constructor(props){
         super(props);
         this.getData=this.getData.bind(this);
+        this.val=''
       }
-
-      val=''
 
     getData(){
         this.props.trackData(this.val);
@@ -18,19 +16,20 @@ class InputTrackComponent extends React.Component{
     render(){	
         return(
             <div className="track-inpt">
-            <div class=" read-only">    
-      <h1 className="read-only-inpt">Track your order</h1>
-    </div>
-        <div class="group">      
-            <input type="text" onChange={(e)=>this.val=e.target.value} required />
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Track Code</label>
-        </div>
-	<div class="button-container">
-        <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
-    </div> 
-    </div>)
+                <div class=" read-only">    
+                    <h1 className="read-only-inpt">Track your order</h1>
+                </div>
+                <div class="group">      
+                    <input type="text" onChange={(e)=>this.val=e.target.value} required />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Track Code</label>
+                </div>
+	            <div class="button-container">
+                    <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
+                </div> 
+            </div>
+        );
     }
 }
 
