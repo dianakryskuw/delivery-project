@@ -13,18 +13,18 @@ var mail = {
     from: "Delivery Service <great.delivery.service@gmail.com>",
     to: "diana.kryskuw@gmail.com",
     subject: "Order Information",
-    text: "HELLO!",
-    html: "<b>Hello!</b>"
+    html: "<b>Hello!</b> <p> Thank you for your order! Your order was sent and processing now.</p> <p> You can track it by link:</p>"
 }
 
-mailing=()=>smtpTransport.sendMail(mail, function(error, response){
-    console.log(mail);
-    if(error){
+mailing = () => smtpTransport.sendMail(mail, function(error, response) {
+    if (error) {
         console.log(error);
-    }else{
+    } else {
         console.log("Message sent: " + response.message);
     }
 
     smtpTransport.close();
 });
-module.exports={mailing}
+module.exports = {
+    mailing
+}

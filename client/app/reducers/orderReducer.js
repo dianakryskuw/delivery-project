@@ -1,14 +1,13 @@
 import * as types from '../constants/actionTypes';
 
-const initialState = {
-};
+const initialState = {};
 
-export default function setMapData(state=initialState, action) {
+export default function setMapData(state = initialState, action) {
     switch (action.type) {
-    case 'ADD':{
-        return action.payload;
+
+        case types.ADD:
+            return action.payload;
+        default:
+            return state;
     }
-    default:
-    return state;
-    } 
-  }
+}

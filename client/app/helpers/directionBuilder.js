@@ -1,10 +1,10 @@
-export default function buildDirection(marker1, marker2){
+export default function buildDirection(markerFrom, markerTo){
     const DirectionsService = new google.maps.DirectionsService();
 
     return new Promise(function(resolve, reject) {
         DirectionsService.route({
-        origin: new google.maps.LatLng(marker1&&marker1.lat, marker1&&marker1.lng),
-        destination: new google.maps.LatLng(marker2&&marker2.lat, marker2&&marker2.lng),
+        origin: new google.maps.LatLng(markerFrom.lat, markerFrom.lng),
+        destination: new google.maps.LatLng(markerTo.lat, markerTo.lng),
         travelMode: google.maps.TravelMode.DRIVING,
         }, (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) { 

@@ -10,22 +10,24 @@ class TrackingComponent extends React.Component{
 
     render(){	
         return(
-        <div>
-        <div className="input-trackdata-container">
-            <InputTrackComponent inputSent={this.inputSent}/>
-        </div> 
-        <h1 style={{
-            display: this.props.data.trackReducer.arrivalDate ? 'block' : 'none'
-        }}
-        >{"Your order arrives "+this.props.data.trackReducer.arrivalDate||""}</h1>
-        <div className="track-map-container">
-            <DirectionComponent/>
-        </div>
-    </div>)
+            <div>
+                <div className="input-trackdata-container">
+                <InputTrackComponent/>
+                </div> 
+                <h1 style={{
+                    display: this.props.data.trackReducer.arrivalDate ? 'block' : 'none'
+                }}
+                >{"Your order arrives "+this.props.data.trackReducer.arrivalDate||""}</h1>
+                <div className="track-map-container">
+                    <DirectionComponent/>
+                </div>
+            </div>
+        )
     }
 }
+
 export default connect(
     state => ({
       data: state
     })
-  )(TrackingComponent);
+)(TrackingComponent);
