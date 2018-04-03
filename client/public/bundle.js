@@ -76,7 +76,6 @@
 
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk2.default)));
 
-	console.log(store.getState());
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
@@ -22020,9 +22019,10 @@
 	            _react2.default.createElement(
 	                _reactRouterDom.Switch,
 	                null,
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _AddingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/add', exact: true, component: _AddingComponent2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', component: _TrackingComponent2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', component: _TrackingComponent2.default })
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', exact: true, component: _TrackingComponent2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', exact: true, component: _TrackingComponent2.default })
 	            )
 	        )
 	    );
@@ -54972,7 +54972,13 @@
 	                    type: 'ADD',
 	                    payload: response.data
 	                });
-	            } else alert("Error");
+	            } else {
+	                alert("Error");
+	                dispatch({
+	                    type: 'ADD',
+	                    payload: {}
+	                });
+	            }
 	        });
 	    };
 	}
@@ -73445,7 +73451,11 @@
 				return _react2.default.createElement(
 					'div',
 					null,
-					_react2.default.createElement('button', { id: 'submit-btn', type: 'submit', 'data-toggle': 'modal', 'data-target': '#myModal', onClick: this.props.onClick, value: 'Track' }),
+					_react2.default.createElement(
+						'div',
+						{ className: 'button-container' },
+						_react2.default.createElement('input', { id: 'submit-btn', 'data-toggle': 'modal', 'data-target': '#myModal', onClick: this.props.onClick, value: 'Add order' })
+					),
 					_react2.default.createElement(
 						'div',
 						{ className: 'modal fade', id: 'myModal', role: 'dialog' },
@@ -73481,7 +73491,7 @@
 									),
 									_react2.default.createElement(
 										'a',
-										{ href: 'https://delivery-service08.herokuapp.com//track' },
+										{ href: 'https://delivery-service08.herokuapp.com/track' },
 										'TRACK NOW!'
 									)
 								),
