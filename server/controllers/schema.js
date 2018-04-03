@@ -50,7 +50,8 @@ var orderScheme = new Schema({
             },
             weight: { type: Number, default: 1 },
         }
-    ]
+    ],
+    emailSent:{type:Boolean,default:false   }
   })
   
   var carScheme = new Schema({
