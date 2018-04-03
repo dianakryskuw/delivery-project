@@ -15,10 +15,6 @@ module.exports = (app) => {
             message: "Subject: test\r\n\r\nHello world!"
         }
         mail.mailing();
-        mongoose.connect(MONGO_URL);
-        var db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
-        db.once('open', function() {
             var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
             var my_id = new ObjectId();
             var curr_date = new Date(Date.now());
@@ -37,7 +33,6 @@ module.exports = (app) => {
                 orderId: my_order._id,
                 orderArrivalDate: my_order.arrivalDate
             });
-        });
     });
 
     app.post('/api/orders', function(request, response) {
@@ -58,10 +53,7 @@ module.exports = (app) => {
             newOrder.time = result.rows[0].elements[0].duration;
             newOrder.price = Math.round(newOrder.distance.value / 5000);
         })
-        mongoose.connect(MONGO_URL);
-        var db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
-        db.once('open', function() {
+        
             var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
             var my_id = new ObjectId();
             var curr_date = new Date(Date.now());
@@ -88,25 +80,15 @@ module.exports = (app) => {
             });
                 }
             });
-        });
     });
 
     app.get('/track/:id', function(req, res) {
-        mongoose.connect(MONGO_URL);
-        var db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
-        db.once('open', function() {
             var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
-            try {
                 var oId = ObjectId(req.params.id);
                 Order.findOne({ '_id': oId }, function (err, order) {
-                    if (err) return handleError(err);
-                    res.send(order);
+                    if (err) return res.send(err);
+                    else res.send(order);
                   });
-            } catch (e) {
-                res.send(e);
-            }
-        });
     });
 
 

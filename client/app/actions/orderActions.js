@@ -11,8 +11,13 @@ export function addNewOrder(currentData) {
                     payload: response.data
                 })
             } 
-            else
+            else{
                 alert("Error");
+                dispatch({
+                    type: 'ADD',
+                    payload: {}
+                })
+            }
         });
     }
 }
