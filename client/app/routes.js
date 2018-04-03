@@ -18,7 +18,7 @@ export default () =>(
         <Route path="/" exact component={AddingComponent} />
         <Route path="/add" exact component={AddingComponent} />
         <Route path='/track' exact component={TrackingComponent} />
-        <Route path='/track/:id' exact component={TrackingComponent} />
+        <Route path='/track/:id' exact component={TrackingComponent}/>
     </Switch>
     </div>
 </BrowserRouter>

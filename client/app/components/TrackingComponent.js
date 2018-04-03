@@ -9,10 +9,11 @@ class TrackingComponent extends React.Component{
       }
 
     render(){	
+        console.log(this.props.id);
         return(
             <div>
                 <div className="input-trackdata-container">
-                <InputTrackComponent/>
+                <InputTrackComponent trackCode={this.props.id}/>
                 </div> 
                 <h1 style={{
                     display: this.props.data.trackReducer.arrivalDate ? 'block' : 'none'

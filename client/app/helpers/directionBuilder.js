@@ -11,7 +11,6 @@ export default function buildDirection(markerFrom, markerTo){
                 resolve(result);
             } 
             else {
-                reject(new Error("Can''t create route, please check your map data"));
             }
         });
     });

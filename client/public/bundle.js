@@ -37101,13 +37101,14 @@
 	    _createClass(TrackingComponent, [{
 	        key: 'render',
 	        value: function render() {
+	            console.log(this.props.id);
 	            return _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'input-trackdata-container' },
-	                    _react2.default.createElement(_InputTrackComponent2.default, null)
+	                    _react2.default.createElement(_InputTrackComponent2.default, { trackCode: this.props.id })
 	                ),
 	                _react2.default.createElement(
 	                    'h1',
@@ -39405,9 +39406,7 @@
 	        }, function (result, status) {
 	            if (status === google.maps.DirectionsStatus.OK) {
 	                resolve(result);
-	            } else {
-	                reject(new Error("Can''t create route, please check your map data"));
-	            }
+	            } else {}
 	        });
 	    });
 	}
@@ -73428,6 +73427,8 @@
 
 	var _reactRedux = __webpack_require__(414);
 
+	var _reactRouterDom = __webpack_require__(185);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73490,9 +73491,13 @@
 										' by this link:'
 									),
 									_react2.default.createElement(
-										'a',
-										{ href: 'https://delivery-service08.herokuapp.com/track' },
-										'TRACK NOW!'
+										'div',
+										{ className: 'modal-footer' },
+										_react2.default.createElement(
+											_reactRouterDom.Link,
+											{ to: "track/" + this.props.data.orderId, 'data-toggle': 'modal' },
+											'TRACK NOW!'
+										)
 									)
 								),
 								_react2.default.createElement(
@@ -73754,9 +73759,7 @@
 	          onDragEnd: function onDragEnd(e) {
 	            return _this2.props.getMarker(e);
 	          },
-	          onClick: function onClick() {
-	            return _this2.props.getRoute(data.departure_point, data.arrival_point);
-	          }
+	          onPositionChanged: this.props.getRoute(data.departure_point, data.arrival_point)
 	        }),
 	        _react2.default.createElement(Marker, { label: 'To', position: data.arrival_point, draggable: true,
 	          onDragEnd: function onDragEnd(e) {

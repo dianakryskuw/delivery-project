@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 class PopUpComponent extends React.Component{
 	constructor(props){
@@ -21,7 +22,10 @@ class PopUpComponent extends React.Component{
 		  					</div>
 		  					<div class="modal-body">
 									<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
-									<a href="https://delivery-service08.herokuapp.com/track">TRACK NOW!</a>
+									
+        								<div class="modal-footer">
+										<Link to={"track/"+this.props.data.orderId}data-toggle="modal" >TRACK NOW!</Link>
+									</div>
 		  					</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
