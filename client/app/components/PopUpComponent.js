@@ -21,7 +21,7 @@ class PopUpComponent extends React.Component{
 		  					</div>
 		  					<div class="modal-body">
 									<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
-									<a href="http://localhost:8800/track">TRACK NOW!</a>
+									<a href="https://delivery-service08.herokuapp.com/track">TRACK NOW!</a>
 		  					</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
