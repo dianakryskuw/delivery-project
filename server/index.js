@@ -57,4 +57,4 @@ cron.schedule('*/1 * * * *', function(){
   console.log('running a task every minute');
 });
 var port = process.env.PORT || 8800
-module.exports.start = () => app.listen(config.port, () => console.log('App listening on port '+ port));
+module.exports.start = () => app.listen(port, () => console.log('App listening on port '+ port));
