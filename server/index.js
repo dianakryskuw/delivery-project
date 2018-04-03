@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('client'));
 
-app.get("/", (request, response) => {
+app.get("*", (request, response) => {
   response.sendFile(path.resolve("client/", "index.html"));
 });
 app.get("/track", (request, response) => {
