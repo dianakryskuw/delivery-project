@@ -9,7 +9,9 @@ class PopUpComponent extends React.Component{
     render(){
 			return(
 				<div>
-					<button id="submit-btn" type="submit" data-toggle="modal" data-target="#myModal" onClick={this.props.onClick} value="Track"/>
+	            <div class="button-container">
+                    <input id="submit-btn" data-toggle="modal" data-target="#myModal" onClick={this.props.onClick} value="Add order"/>
+                </div> 
   				<div class="modal fade" id="myModal" role="dialog">
 	  				<div class="modal-dialog">
 							<div class="modal-content">
