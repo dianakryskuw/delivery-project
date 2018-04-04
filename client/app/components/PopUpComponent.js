@@ -24,7 +24,7 @@ class PopUpComponent extends React.Component{
 									<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
 									
         								<div class="modal-footer">
-										<Link to={"track/"+this.props.data.orderId}data-toggle="modal" >TRACK NOW!</Link>
+										<Link to={"track/"+this.props.data.orderId} data-toggle="modal" >TRACK NOW!</Link>
 									</div>
 		  					</div>
 								<div class="modal-footer">

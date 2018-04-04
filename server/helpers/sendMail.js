@@ -9,12 +9,12 @@ var smtpTransport = mailer.createTransport({
     }
 });
 
-mailing = (userEmail) => {
+mailing = (userEmail, mailHTML) => {
 var mail = {
     from: "Delivery Service <great.delivery.service@gmail.com>",
     to: userEmail,
     subject: "Order Information",
-    html: "<b>Hello!</b> <p> Thank you for your order! Your order was sent and processing now.</p> <p> You can track it by link: <a href=\"http://localhost:8800/track\">TRACK NOW!</a></p>"
+    html: mailHTML
 }
 
  smtpTransport.sendMail(mail, function(error, response) {

@@ -1,3 +1,5 @@
+var text = require('../constants/mailText');
+
 var ObjectId = require('mongodb').ObjectId;
 var mongoose = require("mongoose");
 var mongooseSchema = require('./schema');
@@ -9,12 +11,6 @@ var distance = require('../helpers/distance');
 
 module.exports = (app) => {
     app.post('/addorder', function(request, response) {
-        textMail = {
-            from: "dianakryskuw@ukr.net",
-            recipients: ["diana.kryskuw@gmail.com"],
-            message: "Subject: test\r\n\r\nHello world!"
-        }
-        mail.mailing();
             var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
             var my_id = new ObjectId();
             var curr_date = new Date(Date.now());
@@ -27,11 +23,16 @@ module.exports = (app) => {
             newOrder.status = "in the store";
             var my_order = new Order(newOrder);
             my_order.save(function(err, my_order) {
-                if (err) return console.error(err);
-            });
-            response.send({
-                orderId: my_order._id,
-                orderArrivalDate: my_order.arrivalDate
+                if (err) return response.send({success:false});
+                    else {
+            var userMail=my_order.email;
+            var mailHTML=text.sendAddedOrderMail(my_order._id)
+                    mail.mailing(userMail,mailHTML)
+                response.send({
+                    orderId: my_order._id,
+                    orderArrivalDate: my_order.arrivalDate
+                });
+            }
             });
     });
 

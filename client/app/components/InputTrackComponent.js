@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { assyncGet } from '../actions/trackActions.js'
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 class InputTrackComponent extends React.Component{
     constructor(props){
@@ -26,7 +27,9 @@ class InputTrackComponent extends React.Component{
                     <label>Track Code</label>
                 </div>
 	            <div class="button-container">
+                    <Link to={"track/"+this.val} >
                     <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
+                    </Link>
                 </div> 
             </div>
         );

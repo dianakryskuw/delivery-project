@@ -53090,6 +53090,8 @@
 
 	var _trackActions = __webpack_require__(662);
 
+	var _reactRouterDom = __webpack_require__(185);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53150,7 +53152,11 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'button-container' },
-	                    _react2.default.createElement('input', { id: 'submit-btn', type: 'submit', onClick: this.getData, value: 'Track' })
+	                    _react2.default.createElement(
+	                        _reactRouterDom.Link,
+	                        { to: "track/" + this.val },
+	                        _react2.default.createElement('input', { id: 'submit-btn', type: 'submit', onClick: this.getData, value: 'Track' })
+	                    )
 	                )
 	            );
 	        }
