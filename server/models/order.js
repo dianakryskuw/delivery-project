@@ -1,37 +1,58 @@
-var mongoose = require('mongoose');
-
-var orderSchema = new Schema({
-    departure_point: {
-        lat: Number,
-        lng: Number,
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+mongoose.Promise = global.Promise;
+var orderScheme = new Schema({
+    departurePoint: {
+        lat: {
+          type: Number,
+          required: true
+        },
+        lng: {
+          type: Number,
+          required: true
+        },
         address: String
     },
-    arrival_point: {
-      lat: Number,
-      lng: Number,
+    arrivalPoint: {
+      lat: {
+        type: Number,
+        required: true
+      },
+      lng: {
+        type: Number,
+        required: true
+      },
       address: String
     },
-    time:{
-        text: String,
-        value: Number
+    time: {
+      text:  String,
+      value: Number
     },
     distance: {
-        text: String,
-        value: Number
+      text:  String,
+      value: Number
     },
     price: Number,
     date:Date,
-    arrivalDate: Date,
-    email: String,
-    status:String,
+    arrivalDate: { type: Date, default: null },
+    email: {
+      type: String,
+      required: true
+    },
+    status:{
+      type: String,
+      enum: ['in the store', 'on the way','delivered']},
     items: [
         {
-            name: String,
-            weight: Number
+            name: {
+              type: String,
+              required: true,
+              default:'something'
+            },
+            weight: { type: Number, default: 1 },
         }
-    ]
+    ],
+    emailSent:{type:Boolean,default:false   }
   })
-
-var Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order;
+  
+  module.exports={orderScheme}

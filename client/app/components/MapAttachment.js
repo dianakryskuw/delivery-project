@@ -15,11 +15,11 @@ class MapAttachment extends React.Component{
       var data = this.props.data;
       return(
         <div>
-            <Marker label="From" position={data.departure_point} draggable={true} 
+            <Marker label="From" position={data.departurePoint} draggable={true} 
             onDragEnd={(e) => this.props.getMarker(e)} 
-            onPositionChanged={this.props.getRoute(data.departure_point,data.arrival_point)}
+            onPositionChanged={this.props.getRoute(data.departurePoint,data.arrivalPoint)}
             />
-            <Marker label="To" position={data.arrival_point} draggable={true}  
+            <Marker label="To" position={data.arrivalPoint} draggable={true}  
             onDragEnd={(e) => this.props.getMarker(e)} 
             />
             <DirectionsRenderer directions={data.direction} />

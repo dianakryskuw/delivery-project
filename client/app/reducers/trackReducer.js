@@ -2,8 +2,8 @@ import * as types from '../constants/actionTypes';
 import axios from 'axios';
 
 const initialState = {
-    departure_point:{},
-    arrival_point:{},
+    departurePoint:{},
+    arrivalPoint:{},
     direction:{}
 };
 

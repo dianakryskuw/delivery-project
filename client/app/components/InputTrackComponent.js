@@ -7,7 +7,7 @@ class InputTrackComponent extends React.Component{
     constructor(props){
         super(props);
         this.getData=this.getData.bind(this);
-        this.val=''
+        this.val=this.props.trackCode||'';
       }
 
     getData(){
@@ -21,13 +21,13 @@ class InputTrackComponent extends React.Component{
                     <h1 className="read-only-inpt">Track your order</h1>
                 </div>
                 <div class="group">      
-                    <input type="text" onChange={(e)=>this.val=e.target.value} required />
+                    <input type="text"  onChange={(e)=>this.val=e.target.value} value={this.val} required />
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Track Code</label>
                 </div>
 	            <div class="button-container">
-                    <Link to={"track/"+this.val} >
+                    <Link to={this.val} >
                     <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
                     </Link>
                 </div> 

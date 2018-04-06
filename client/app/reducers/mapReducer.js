@@ -1,8 +1,8 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-    departure_point:{},
-    arrival_point:{},
+    departurePoint:{},
+    arrivalPoint:{},
     distance:{},
     time:{},
     direction:{}
@@ -15,22 +15,22 @@ export default function setMapData(state = initialState, action) {
             var data = action.payload;
             return {
                 ...state,
-                departure_point: state.arrival_point,
-                arrival_point:data
+                departurePoint: state.arrivalPoint,
+                arrivalPoint:data
             }
         }
         case types.ADDFROMMARKER:{
             var data = action.payload;
             return {
                 ...state,
-                departure_point:data
+                departurePoint:data
             }
         }
         case types.ADDTOMARKER:{
             var data = action.payload;
             return {
                 ...state,
-                arrival_point:data
+                arrivalPoint:data
             }
         }
         case types.ADDROUTE:{

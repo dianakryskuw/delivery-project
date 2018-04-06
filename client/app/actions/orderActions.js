@@ -12,7 +12,6 @@ export function addNewOrder(currentData) {
                 })
             } 
             else{
-                alert("Error");
                 dispatch({
                     type: 'ADD',
                     payload: {}

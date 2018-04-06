@@ -24,7 +24,7 @@ class SearchComponent extends React.Component {
         <PlacesAutocomplete classNames={{ autocompleteContainer: 'ac-container' }} inputProps={inputProps} onSelect={(event) => this.props.getAddress(event, this.props.type)}/>
         <span class="highlight"></span>
         <span class="bar"></span>
-        <label className="searchInpt">Arrival address:</label>
+        <label >Arrival address:</label>
       </div>
     )
   }

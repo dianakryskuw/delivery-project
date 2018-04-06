@@ -18,8 +18,8 @@ class InputComponent extends React.Component {
     sendData() {
         this.mapInfo = this.props.data.mapReducer,
             this.props.addOrderData({
-                departure_point: this.mapInfo.departure_point,
-                arrival_point: this.mapInfo.arrival_point,
+                departurePoint: this.mapInfo.departurePoint,
+                arrivalPoint: this.mapInfo.arrivalPoint,
                 distance: this.mapInfo.distance,
                 time: this.mapInfo.time,
                 email: this.email,
@@ -40,8 +40,8 @@ class InputComponent extends React.Component {
             <InputSpace name= "Name" type="text" onChange={(e)=>this.item_name=e.target.value} />
             <InputSpace name= "Weight" type="number" onChange={(e)=>this.item_weight=e.target.value} />
             <InputSpace name= "Email" type="email" onChange={(e)=>this.email=e.target.value} />
-            <SearchComponent className="searchInpt" text={data.departure_point.address||''} type='From' required/>
-            <SearchComponent className="searchInpt" text={data.arrival_point.address||''} type='To' required/>
+            <SearchComponent className="searchInpt" text={data.departurePoint.address||''} type='From'/>
+            <SearchComponent className="searchInpt" text={data.arrivalPoint.address||''} type='To'/>
             <InputSpace name= "Distance" type="text" value={data.distance?data.distance.text:''} readOnly/>
             <InputSpace name= "Duration" type="text" value={data.time?data.time.text:''} readOnly/>
             <div class="button-container">

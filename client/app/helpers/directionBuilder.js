@@ -10,8 +10,6 @@ export default function buildDirection(markerFrom, markerTo){
             if (status === google.maps.DirectionsStatus.OK) { 
                 resolve(result);
             } 
-            else {
-            }
         });
     });
 }

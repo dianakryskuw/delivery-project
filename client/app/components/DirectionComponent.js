@@ -21,10 +21,8 @@ class DirectionComponent extends React.Component {
     }
 
     render() {
-        var from = this.props.data.departure_point;
-        var to = this.props.data.arrival_point;
-        console.log("FROM",from)
-        console.log("TO",to)
+        var from = this.props.data.departurePoint;
+        var to = this.props.data.arrivalPoint;
         const DirectionComponent = compose(
             withProps({
                 loadingElement: <div style={{ height: `100%` }} />,

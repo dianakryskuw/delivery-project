@@ -28,17 +28,14 @@ body{
   text-align: center;
 }
 .map-container{
-  margin-left: 20%;
-  margin-right: 1%;
-  margin-top: 4%;
   padding: 1%;
-  width:35%;
+  width:75%;
   background-color: rgb(255, 255, 255);
   float: left;
 }
 .input-data-container{
   margin-left: 1%;
-  margin-right: 20%;
+  margin-right: 4%;
   margin-top: 4%;
   width:20%;
   display: block;

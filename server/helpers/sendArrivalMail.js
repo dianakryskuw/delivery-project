@@ -6,23 +6,21 @@ var text = require('../constants/mailText');
 
 var startCron = ()=> cron.schedule('*/5 * * * *', function(){
       var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
-          var currentDate = new Date(Date.now());
-          Order.find({ 'arrivalDate': {$lt:currentDate}, 'emailSent':false}, function (err, orders) {
-              if (err) return handleError(err);
-              else{
+          Order.find({ 'status': "delivery", 'emailSent':false}, function (err, orders) {
+              if (!err) {
               orders.forEach(order => {
                 var mailHTML=text.sendArrivedOrderMail(order._id);
                 mail.mailing(order.email,mailHTML);
               });
             }
             });
-            Order.update({'arrivalDate': {$lt:currentDate}, 'emailSent':false}, { $set: { emailSent: true }},
+            Order.update({'status': "delivery", 'emailSent':false}, { $set: { emailSent: true }},
             {
               multi: true
             }, function(err) {
               if (err) return res.send(err);
             });
-  console.log('chackind order status 5 minute');
+  console.log('checking order status 5 minute');
 });
 
 module.exports = {startCron}

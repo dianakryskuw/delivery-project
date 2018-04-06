@@ -4,10 +4,10 @@ import buildDirection from '../helpers/directionBuilder';
 export function assyncGet(currentData){
     return dispatch =>{
   axios.get('/track/'+currentData).then(function (response) {
-      if (response.data.departure_point){
+      if (response.data.departurePoint){
           dispatch({ type: 'TRACK', payload: { 
-                  departure_point: response.data.departure_point,
-                  arrival_point: response.data.arrival_point,
+                  departurePoint: response.data.departurePoint,
+                  arrivalPoint: response.data.arrivalPoint,
                   arrivalDate: response.data.arrivalDate
               } 
           })

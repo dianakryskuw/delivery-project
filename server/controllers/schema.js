@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 var orderScheme = new Schema({
-    departure_point: {
+    departurePoint: {
         lat: {
           type: Number,
           required: true
@@ -13,7 +13,7 @@ var orderScheme = new Schema({
         },
         address: String
     },
-    arrival_point: {
+    arrivalPoint: {
       lat: {
         type: Number,
         required: true

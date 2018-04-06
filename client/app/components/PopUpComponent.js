@@ -1,42 +1,66 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import Modal from 'react-modal'
+
+const customStyles = {
+	content : {
+	  top                   : '50%',
+	  left                  : '50%',
+	  right                 : 'auto',
+	  bottom                : 'auto',
+	  marginRight           : '-50%',
+	  transform             : 'translate(-50%, -50%)'
+	}
+  };
 
 class PopUpComponent extends React.Component{
 	constructor(props){
     super(props);
-    }
+    this.state = {
+		modalIsOpen: false
+	  };
+  
+	  this.openModal = this.openModal.bind(this);
+	  this.afterOpenModal = this.afterOpenModal.bind(this);
+	  this.closeModal = this.closeModal.bind(this);
+	}
+  
+	openModal() {
+	  this.setState({modalIsOpen: true});
+	}
+  
+	afterOpenModal() {
+	  // references are now sync'd and can be accessed.
+	  this.subtitle.style.color = '#f00';
+	}
+  
+	closeModal() {
+	  this.setState({modalIsOpen: false});
+	}
+  
+	render() {
+	  return (
+		<div>
+		  <button onClick={this.openModal}>    <input id="submit-btn" data-toggle="modal" data-target="#myModal" onClick={this.props.onClick} value="Add order"/>
+                </button>
+		  <Modal
+			isOpen={this.state.modalIsOpen}
+			onAfterOpen={this.afterOpenModal}
+			onRequestClose={this.closeModal}
+			style={customStyles}
+			contentLabel="Example Modal"
+		  >
 
-    render(){
-			return(
-				<div>
-	            <div class="button-container">
-                    <input id="submit-btn" data-toggle="modal" data-target="#myModal" onClick={this.props.onClick} value="Add order"/>
-                </div> 
-  				<div class="modal fade" id="myModal" role="dialog">
-	  				<div class="modal-dialog">
-							<div class="modal-content">
-		  					<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Your order wass sent</h4>
-		  					</div>
-		  					<div class="modal-body">
-									<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
-									
-        								<div class="modal-footer">
-										<Link to={"track/"+this.props.data.orderId} data-toggle="modal" >TRACK NOW!</Link>
-									</div>
-		  					</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div>
-	  			</div>
-				</div>
-			)
-    }
-}
+			<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
+			
+				<Link to={"track/"+this.props.data.orderId}>TRACK NOW!</Link>
+			<button onClick={this.closeModal}>close</button>
+		  </Modal>
+		</div>
+	  );
+	}
+  }
 export default connect(
     state => ({
         data:state.orderReducer

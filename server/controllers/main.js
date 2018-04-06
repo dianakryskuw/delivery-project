@@ -17,7 +17,7 @@ module.exports = (app) => {
             var arr_date = null;
             var newOrder = request.body.currentData;
             newOrder._id = my_id;
-            newOrder.price = 200;
+            newOrder.price = Math.round(newOrder.distance.value / 5000);
             newOrder.date = curr_date;
             newOrder.arrivalDate = null;
             newOrder.status = "in the store";
@@ -38,18 +38,18 @@ module.exports = (app) => {
 
     app.post('/api/orders', function(request, response) {
         var newOrder = request.body;
-        const departure_point={
+        const departurePoint={
             lat:51.03327,
             lng:32.42985
         }
-        newOrder.departure_point=departure_point;
+        newOrder.departurePoint=departurePoint;
         var distanceParams = {
-            "origins": departure_point.lat + "," + departure_point.lng,
-            "destinations": request.body.arrival_point.lat + "," + request.body.arrival_point.lng
+            "origins": departurePoint.lat + "," + departurePoint.lng,
+            "destinations": request.body.arrivalPoint.lat + "," + request.body.arrivalPoint.lng
         };
         distance.distance(distanceParams).then(result => {
-            newOrder.departure_point.address = result.origin_addresses[0];
-            newOrder.arrival_point.address = result.destination_addresses[0];
+            newOrder.departurePoint.address = result.origin_addresses[0];
+            newOrder.arrivalPoint.address = result.destination_addresses[0];
             newOrder.distance = result.rows[0].elements[0].distance;
             newOrder.time = result.rows[0].elements[0].duration;
             newOrder.price = Math.round(newOrder.distance.value / 5000);
@@ -76,8 +76,7 @@ module.exports = (app) => {
             response.send({
                 success: true,
                 trackId: newOrder._id,
-                trackCode: trackUrl + newOrder._id,
-                arrivalDate: newOrder.arrivalDate
+                trackCode: trackUrl + newOrder._id
             });
                 }
             });
@@ -88,7 +87,10 @@ module.exports = (app) => {
                 var oId = ObjectId(req.params.id);
                 Order.findOne({ '_id': oId }, function (err, order) {
                     if (err) return res.send(err);
-                    else res.send(order);
+                    else {
+                        res.send(order);
+                        console.log("ORDERS",order);
+                    }
                   });
     });
 
