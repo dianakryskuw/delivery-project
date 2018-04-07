@@ -1,22 +1,8 @@
-import axios from 'axios';
-export function addNewOrder(currentData) {
-    return dispatch => {
-        axios.post('/addorder', {
-            currentData
-        }).then(function(response) {
-            if (response.data) {
-                console.log('RESPONSE',response.data)
-                dispatch({
-                    type: 'ADD',
-                    payload: response.data
-                })
-            } 
-            else{
-                dispatch({
-                    type: 'ADD',
-                    payload: {}
-                })
-            }
-        });
+import * as types from '../constants/actionTypes';
+
+export function addNewOrder(result) {
+    return{
+        type: types.ADD_NEW_ORDER,
+        payload: result
     }
 }

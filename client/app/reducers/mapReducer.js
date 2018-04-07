@@ -11,7 +11,7 @@ const initialState = {
 export default function setMapData(state = initialState, action) {
     switch (action.type) {
 
-        case types.ADDMARKER:{
+        case types.ADD_MARKER:{
             var data = action.payload;
             return {
                 ...state,
@@ -19,21 +19,24 @@ export default function setMapData(state = initialState, action) {
                 arrivalPoint:data
             }
         }
-        case types.ADDFROMMARKER:{
+
+        case types.ADD_FROM_MARKER:{
             var data = action.payload;
             return {
                 ...state,
                 departurePoint:data
             }
         }
-        case types.ADDTOMARKER:{
+
+        case types.ADD_TO_MARKER:{
             var data = action.payload;
             return {
                 ...state,
                 arrivalPoint:data
             }
         }
-        case types.ADDROUTE:{
+
+        case types.ADD_ROUTE:{
             var data = action.payload.routes[0].legs[0];
             return {
                 ...state,
@@ -42,6 +45,7 @@ export default function setMapData(state = initialState, action) {
                 direction: action.payload
             }
         }
+        
         default:
             return state;
     }

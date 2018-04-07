@@ -1,35 +1,12 @@
-import axios from 'axios';
-import buildDirection from '../helpers/directionBuilder';
+import * as types from '../constants/actionTypes';
 
-export function assyncGet(currentData){
-    return dispatch =>{
-  axios.get('/track/'+currentData).then(function (response) {
-      if (response.data.departurePoint){
-          dispatch({ type: 'TRACK', payload: { 
-                  departurePoint: response.data.departurePoint,
-                  arrivalPoint: response.data.arrivalPoint,
-                  arrivalDate: response.data.arrivalDate
-              } 
-          })
-      }
-      else
-          alert("Please, input valid track code");
-    });
+export function trackByCode(result){
+    return { 
+        type: types.TRACK, 
+        payload: { 
+                  departurePoint: result.departurePoint,
+                  arrivalPoint: result.arrivalPoint,
+                  arrivalDate: result.arrivalDate
+        }
     }
 }  
-
-export function addTrackRoute(positionFrom, positionTo) {
-
-    return dispatch => {
-        buildDirection(positionFrom, positionTo)
-            .then(
-                result => dispatch({
-                    type: 'ADDTRACKROUTE',
-                    payload: result
-                }),
-                error => {
-                    console.log(error.message);
-                }
-            );
-    }
-}

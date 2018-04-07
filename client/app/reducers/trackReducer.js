@@ -7,16 +7,12 @@ const initialState = {
     direction:{}
 };
 
-export default function trackOrder(state = {}, action) { 
+export default function trackOrder(state = initialState, action) { 
     switch (action.type) {
 
     case types.TRACK:
         return action.payload;
-    case types.ADDTRACKROUTE:
-        return {
-            ...state,
-            direction: action.payload
-        }
+
     default:
         return state;
     }

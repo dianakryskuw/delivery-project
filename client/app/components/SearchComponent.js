@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addAddress } from '../actions/mapActions';
+import { addAddress } from '../logic'
 import PlacesAutocomplete from 'react-places-autocomplete'
  
 class SearchComponent extends React.Component {
@@ -20,11 +20,11 @@ class SearchComponent extends React.Component {
       onChange: this.onChange
     }
     return (
-      <div class="group">  
-        <PlacesAutocomplete classNames={{ autocompleteContainer: 'ac-container' }} inputProps={inputProps} onSelect={(event) => this.props.getAddress(event, this.props.type)}/>
-        <span class="highlight"></span>
+      <div class="group"> 
+        <PlacesAutocomplete  classNames={{ autocompleteContainer: 'ac-container', input:'my-inpt' }} inputProps={inputProps} onSelect={(event) => this.props.addAddress(event, this.props.type)}/>
+        <label >{this.props.name}</label>
+      <span class="highlight"></span>
         <span class="bar"></span>
-        <label >Arrival address:</label>
       </div>
     )
   }
@@ -34,9 +34,5 @@ export default connect(
   state => ({
     data:state
   }),
-  dispatch => ({
-    getAddress: (currentData,type) => {
-        dispatch(addAddress(currentData,type));
-    }
-  })
+  {addAddress}
 )(SearchComponent)

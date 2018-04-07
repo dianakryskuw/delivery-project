@@ -23,12 +23,15 @@ module.exports = (app) => {
             newOrder.status = "in the store";
             var my_order = new Order(newOrder);
             my_order.save(function(err, my_order) {
-                if (err) return response.send({success:false});
+                if (err) {
+                    return response.send({success:false});
+                }
                     else {
             var userMail=my_order.email;
             var mailHTML=text.sendAddedOrderMail(my_order._id)
                     mail.mailing(userMail,mailHTML)
                 response.send({
+                    success:true,
                     orderId: my_order._id,
                     orderArrivalDate: my_order.arrivalDate
                 });

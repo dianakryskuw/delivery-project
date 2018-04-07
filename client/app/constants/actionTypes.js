@@ -1,10 +1,8 @@
-export const ADDMARKER = 'ADDMARKER';
-export const ADDFROMMARKER = 'ADDFROMMARKER';
-export const ADDTOMARKER = 'ADDTOMARKER';
-export const ADDROUTE = 'ADDROUTE';
-
+export const ADD_MARKER = 'ADD_MARKER';
+export const ADD_FROM_MARKER = 'ADD_FROM_MARKER';
+export const ADD_TO_MARKER = 'ADD_TO_MARKER';
+export const ADD_ROUTE = 'ADD_ROUTE';
 
 export const TRACK = 'TRACK';
-export const ADDTRACKROUTE = 'ADDTRACKROUTE';
 
-export const ADD = 'ADD';
+export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';

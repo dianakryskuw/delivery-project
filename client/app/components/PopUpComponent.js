@@ -27,7 +27,8 @@ class PopUpComponent extends React.Component{
 	}
   
 	openModal() {
-	  this.setState({modalIsOpen: true});
+		this.setState({modalIsOpen: true});
+		this.props.onClick();
 	}
   
 	afterOpenModal() {
@@ -42,8 +43,7 @@ class PopUpComponent extends React.Component{
 	render() {
 	  return (
 		<div>
-		  <button onClick={this.openModal}>    <input id="submit-btn" data-toggle="modal" data-target="#myModal" onClick={this.props.onClick} value="Add order"/>
-                </button>
+			 <input id="submit-btn" onClick={this.openModal} value="Add order"/>
 		  <Modal
 			isOpen={this.state.modalIsOpen}
 			onAfterOpen={this.afterOpenModal}
@@ -52,10 +52,11 @@ class PopUpComponent extends React.Component{
 			contentLabel="Example Modal"
 		  >
 
-			<p>Thank you for your order. You can track your order with track code {this.props.data.orderId} by this link:</p>
-			
+			<h1>Thank you for your order!</h1>
+			<p> You can track your order with track code {this.props.data.orderId} by this link:</p>
 				<Link to={"track/"+this.props.data.orderId}>TRACK NOW!</Link>
-			<button onClick={this.closeModal}>close</button>
+				<p/>
+			<button onClick={this.closeModal}>Close</button>
 		  </Modal>
 		</div>
 	  );

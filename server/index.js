@@ -44,7 +44,7 @@ app.get("*", (request, response) => {
 
 controllers.set(app);
 
-arrivalMail.startCron();
+arrivalMail.startCron.then(result=> console.log(result));
 
 var port = process.env.PORT || 8800
 module.exports.start = () => app.listen(port, () => console.log('App listening on port '+ port));
