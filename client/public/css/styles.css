@@ -41,16 +41,29 @@ body{
   text-align: center;
   background-color: rgba(255, 255, 255, 0.80);
 }
-.input-trackdata-container{
-  margin-top: 1%;
-  margin-bottom: 1%;
-  width:40%;
-  display: block;
+.info-data-container{
+  width:36%;
+  position: absolute;
+  top: 1%;
+  right:-37%;
   text-align: center;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  background-color:  rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.80);
+  animation-name: example; /* Safari 4.0 - 8.0 */
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+@keyframes example {
+  0%   {right: -36%}
+  100% {right: 1%}
+}
+.input-trackdata-container{
+  width:25%;
+  position: absolute;
+  top: 1%;
+  left:1%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.80);
 }
 .track-map-container{
   margin-top: 1%;
@@ -140,21 +153,16 @@ label 				 {
   -webkit-transition:0.2s ease all;
 }
 /* active state */
-input:hover ~ label, input:valid ~ label {
+input:hover ~ label, input:valid ~ label{
   top:-45%;
   font-size:16px;
   color:rgb(24, 82, 94);
 }
-#PlacesAutocomplete__root:hover ~ label{
+#PlacesAutocomplete__root ~ label{
   top:-45%;
   font-size:16px;
   color:rgb(24, 82, 94);
-}
-#PlacesAutocomplete__root:valid ~ label{
-  top:-45%;
-  font-size:16px;
-  color:rgb(24, 82, 94);
-}
+} 
 /* BOTTOM BARS ================================= */
 .bar 	{ position:relative; display:block; width:300px; }
 .bar:before, .bar:after 	{

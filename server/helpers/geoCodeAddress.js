@@ -7,8 +7,8 @@ var publicConfig = {
 };
 var gmAPI = new GoogleMapsAPI(publicConfig);
 
-var geocode = (reverseGeocodeParams) => new Promise(function(resolve, reject) {
-    gmAPI.reverseGeocode(reverseGeocodeParams, function(err, result) {
+var geocode = (reverseGeocodeParams) => new Promise((resolve, reject) => {
+    gmAPI.reverseGeocode(reverseGeocodeParams, (err, result) => {
         console.log("RESULT: ", result.results[0]);
         resolve(result.results[0]);
     });

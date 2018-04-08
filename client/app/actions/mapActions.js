@@ -23,7 +23,7 @@ export function addFromAddress(result) {
 
 export function addToAddress(result) {
   return {
-    type: types.ADD_MARKER,
+    type: types.ADD_TO_MARKER,
     payload: result
   }
 }

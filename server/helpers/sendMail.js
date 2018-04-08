@@ -17,7 +17,7 @@ var mail = {
     html: mailHTML
 }
 
- smtpTransport.sendMail(mail, function(error, response) {
+ smtpTransport.sendMail(mail).then((response, error) => {
     if (error) {
         console.log(error);
     } else {

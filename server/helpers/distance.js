@@ -7,8 +7,8 @@ var publicConfig = {
 };
 var gmAPI = new GoogleMapsAPI(publicConfig);
 
-var distance = (distanceParams) => new Promise(function(resolve, reject) {
-    gmAPI.distance(distanceParams, function(err, result) {
+var distance = (distanceParams) => new Promise((resolve, reject) => {
+    gmAPI.distance(distanceParams, (err, result) => {
         resolve(result);
     });
 });

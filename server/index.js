@@ -38,10 +38,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("*", (request, response) => {
+app.get("/track", (request, response) => {
   response.sendFile(path.resolve("client/", "index.html"));
 });
-
+app.get("/add", (request, response) => {
+  response.sendFile(path.resolve("client/", "index.html"));
+});app.get("/", (request, response) => {
+  response.sendFile(path.resolve("client/", "index.html"));
+});
 controllers.set(app);
 
 arrivalMail.startCron.then(result=> console.log(result));

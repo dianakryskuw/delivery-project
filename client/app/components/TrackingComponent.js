@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import DirectionComponent from './DirectionComponent';
 import InputTrackComponent from './InputTrackComponent';
+import OrderInfoComponent from './OrderInfoComponent';
 
 class TrackingComponent extends React.Component{
     constructor(props){
@@ -11,16 +12,13 @@ class TrackingComponent extends React.Component{
     render(){	
         return(
             <div>
+                <div className="map-container">
+                    <DirectionComponent/>
                 <div className="input-trackdata-container">
                 <InputTrackComponent trackCode={this.props.data.orderReducer.orderId}/>
-                </div> 
-                <h1 style={{
-                    display: this.props.data.trackReducer.arrivalDate ? 'block' : 'none'
-                }}
-                >{"Your order arrives "+this.props.data.trackReducer.arrivalDate||""}</h1>
-                <div className="track-map-container">
-                    <DirectionComponent/>
                 </div>
+                {this.props.data.trackReducer._id&&<OrderInfoComponent/>}
+                </div>                 
             </div>
         )
     }

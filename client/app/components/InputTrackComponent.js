@@ -22,7 +22,7 @@ class InputTrackComponent extends React.Component{
                 </div>
                 <InputSpace name= "Track Code" type="text" onChange={(e)=>this.val=e.target.value} />
 	            <div class="button-container">
-                    <Link to={this.val} >
+                    <Link to={"/track"+this.val} >
                     <input id="submit-btn" type="submit" onClick={this.getData} value="Track"/>
                     </Link>
                 </div> 

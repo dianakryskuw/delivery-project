@@ -15,12 +15,10 @@ class MapAttachment extends React.Component{
       var data = this.props.data;
       return(
         <div>
-            <Marker label="From" position={data.departurePoint} draggable={true} 
-            onDragEnd={(e) => this.props.addMarker(e)} 
+            <Marker label="From" position={data.departurePoint} 
             onPositionChanged={this.props.addRoute(data.departurePoint,data.arrivalPoint)}
             />
-            <Marker label="To" position={data.arrivalPoint} draggable={true}  
-            onDragEnd={(e) => this.props.addMarker(e)} 
+            <Marker label="To" position={data.arrivalPoint} 
             />
             <DirectionsRenderer directions={data.direction} />
         </div>
@@ -32,5 +30,5 @@ export default connect(
   state => ({
       data:state.mapReducer
   }),
- {addMarker,addRoute}
+ {addRoute}
 )(MapAttachment);

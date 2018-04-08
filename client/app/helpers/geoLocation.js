@@ -2,11 +2,11 @@
 export default function getGeoLocation(latLngObj){
     var geocoder = new google.maps.Geocoder();
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         var addressData={};
         geocoder.geocode({
         'latLng': latLngObj.latLng
-        }, function(results, status) {
+        }, (results, status) => {
             if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
                     addressData={
