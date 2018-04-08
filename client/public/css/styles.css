@@ -19,6 +19,7 @@ body{
   margin: 20%;
   width: 20%;
   height: auto;
+  background-color: #b6e3e9;
 }
 .top{
   width: 100%;
@@ -199,12 +200,15 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
   opacity:0.5;
 }
 
+
+
 /* active state */
 input:focus ~ .highlight {
   -webkit-animation:inputHighlighter 0.3s ease;
   -moz-animation:inputHighlighter 0.3s ease;
   animation:inputHighlighter 0.3s ease;
 }
+
 
 .button-container {
   display: flex;
@@ -218,9 +222,10 @@ input:focus ~ .highlight {
 }
 #submit-btn {
   outline:none;
-  height: 40px;
+  height: 100%;
   text-align: center;
-  width: 130px;
+  width: 100%;
+  min-width: 80px;
   border-radius:40px;
   background: #fff;
   border: 2px solid  rgb(36, 154, 158);
@@ -233,11 +238,11 @@ input:focus ~ .highlight {
   transition: all 0.25s ease;
 }
 #submit-btn:hover {
-    color:rgb(39, 43, 63);
-    background: rgb(182, 220, 236);
+    color:rgb(7, 66, 83);
+    background: rgb(230, 255, 255);
   }
 #submit-btn:active {
-    letter-spacing: 2px ;
+    letter-spacing: 3px ;
   }
 #submit-btn:after {
     content:"SUBMIT";

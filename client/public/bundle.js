@@ -62,15 +62,15 @@
 
 	var _redux = __webpack_require__(423);
 
-	var _reducers = __webpack_require__(719);
+	var _reducers = __webpack_require__(720);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _reduxThunk = __webpack_require__(723);
+	var _reduxThunk = __webpack_require__(724);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxDevtoolsExtension = __webpack_require__(724);
+	var _reduxDevtoolsExtension = __webpack_require__(725);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21977,9 +21977,17 @@
 
 	var _TrackingComponent2 = _interopRequireDefault(_TrackingComponent);
 
-	var _AddingComponent = __webpack_require__(700);
+	var _AddingComponent = __webpack_require__(713);
 
 	var _AddingComponent2 = _interopRequireDefault(_AddingComponent);
+
+	var _MapWithASearchBox = __webpack_require__(715);
+
+	var _MapWithASearchBox2 = _interopRequireDefault(_MapWithASearchBox);
+
+	var _DirectionComponent = __webpack_require__(448);
+
+	var _DirectionComponent2 = _interopRequireDefault(_DirectionComponent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22019,7 +22027,7 @@
 	            _react2.default.createElement(
 	                _reactRouterDom.Switch,
 	                null,
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _AddingComponent2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _DirectionComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/add', exact: true, component: _AddingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', component: _TrackingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', component: _TrackingComponent2.default })
@@ -37081,7 +37089,7 @@
 
 	var _InputTrackComponent2 = _interopRequireDefault(_InputTrackComponent);
 
-	var _OrderInfoComponent = __webpack_require__(725);
+	var _OrderInfoComponent = __webpack_require__(700);
 
 	var _OrderInfoComponent2 = _interopRequireDefault(_OrderInfoComponent);
 
@@ -39399,8 +39407,13 @@
 	            destination: new google.maps.LatLng(markerTo.lat, markerTo.lng),
 	            travelMode: google.maps.TravelMode.DRIVING
 	        }, function (result, status) {
+	            console.log("STATUS", status);
 	            if (status === google.maps.DirectionsStatus.OK) {
 	                resolve(result);
+	            }
+	            if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
+	                var error = new Error("Incorrect data for route");
+	                reject(error);
 	            }
 	        });
 	    });
@@ -53167,6 +53180,7 @@
 	    value: true
 	});
 	exports.addMarker = addMarker;
+	exports.addMap = addMap;
 	exports.addRoute = addRoute;
 	exports.addAddress = addAddress;
 	exports.trackByCode = trackByCode;
@@ -53211,11 +53225,20 @@
 	    };
 	}
 
+	function addMap(map) {
+
+	    return function (dispatch) {
+	        return dispatch(mapActions.addMap(map));
+	    };
+	}
+
 	function addRoute(positionFrom, positionTo) {
 
 	    return function (dispatch) {
 	        (0, _directionBuilder2.default)(positionFrom, positionTo).then(function (result) {
 	            return dispatch(mapActions.addRoute(result));
+	        }, function (error) {
+	            return dispatch(mapActions.addRoute(null));
 	        });
 	    };
 	}
@@ -54359,6 +54382,7 @@
 	  value: true
 	});
 	exports.addMarker = addMarker;
+	exports.addMap = addMap;
 	exports.addRoute = addRoute;
 	exports.addFromAddress = addFromAddress;
 	exports.addToAddress = addToAddress;
@@ -54376,10 +54400,20 @@
 	  };
 	}
 
-	function addRoute(result) {
+	function addMap(result) {
 	  return {
+	    type: types.ADD_MAP,
+	    payload: result
+	  };
+	}
+
+	function addRoute(result) {
+	  if (result) return {
 	    type: types.ADD_ROUTE,
 	    payload: result
+	  };else return {
+	    type: types.CLEAR_ROUTE,
+	    payload: {}
 	  };
 	}
 
@@ -54410,6 +54444,8 @@
 	var ADD_FROM_MARKER = exports.ADD_FROM_MARKER = 'ADD_FROM_MARKER';
 	var ADD_TO_MARKER = exports.ADD_TO_MARKER = 'ADD_TO_MARKER';
 	var ADD_ROUTE = exports.ADD_ROUTE = 'ADD_ROUTE';
+	var CLEAR_ROUTE = exports.CLEAR_ROUTE = 'CLEAR_ROUTE';
+	var ADD_MAP = exports.ADD_MAP = 'ADD_MAP';
 
 	var TRACK = exports.TRACK = 'TRACK';
 
@@ -56068,81 +56104,9 @@
 
 	var _reactRedux = __webpack_require__(414);
 
-	var _InputComponent = __webpack_require__(701);
-
-	var _InputComponent2 = _interopRequireDefault(_InputComponent);
-
-	var _MapWithASearchBox = __webpack_require__(714);
-
-	var _MapWithASearchBox2 = _interopRequireDefault(_MapWithASearchBox);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AddingComponent = function (_React$Component) {
-	    _inherits(AddingComponent, _React$Component);
-
-	    function AddingComponent(props) {
-	        _classCallCheck(this, AddingComponent);
-
-	        return _possibleConstructorReturn(this, (AddingComponent.__proto__ || Object.getPrototypeOf(AddingComponent)).call(this, props));
-	    }
-
-	    _createClass(AddingComponent, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'map-container' },
-	                    _react2.default.createElement(_MapWithASearchBox2.default, null),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'input-data-container' },
-	                        _react2.default.createElement(_InputComponent2.default, null)
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AddingComponent;
-	}(_react2.default.Component);
-
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        data: state.orderReducer
-	    };
-	})(AddingComponent);
-
-/***/ }),
-/* 701 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(414);
-
 	var _logic = __webpack_require__(662);
 
-	var _SearchComponent = __webpack_require__(702);
+	var _SearchComponent = __webpack_require__(701);
 
 	var _SearchComponent2 = _interopRequireDefault(_SearchComponent);
 
@@ -56150,7 +56114,7 @@
 
 	var _InputSpace2 = _interopRequireDefault(_InputSpace);
 
-	var _PopUpComponent = __webpack_require__(703);
+	var _PopUpComponent = __webpack_require__(702);
 
 	var _PopUpComponent2 = _interopRequireDefault(_PopUpComponent);
 
@@ -56168,36 +56132,16 @@
 	    function InputComponent(props) {
 	        _classCallCheck(this, InputComponent);
 
-	        var _this = _possibleConstructorReturn(this, (InputComponent.__proto__ || Object.getPrototypeOf(InputComponent)).call(this, props));
-
-	        _this.sendData = _this.sendData.bind(_this);
-	        return _this;
+	        return _possibleConstructorReturn(this, (InputComponent.__proto__ || Object.getPrototypeOf(InputComponent)).call(this, props));
 	    }
 
 	    _createClass(InputComponent, [{
-	        key: 'sendData',
-	        value: function sendData() {
-	            this.mapInfo = this.props.data.mapReducer, this.props.addNewOrder({
-	                departurePoint: this.mapInfo.departurePoint,
-	                arrivalPoint: this.mapInfo.arrivalPoint,
-	                distance: this.mapInfo.distance,
-	                time: this.mapInfo.time,
-	                email: this.email,
-	                items: [{
-	                    name: this.item_name,
-	                    weight: this.item_weight
-	                }]
-	            });
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
-	            var data = this.props.data.mapReducer;
+	            var data = this.props.data.trackReducer;
 	            return _react2.default.createElement(
 	                'div',
-	                null,
+	                { className: 'info-data-container' },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: ' read-only' },
@@ -56207,23 +56151,27 @@
 	                        'Order information'
 	                    )
 	                ),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Name', type: 'text', onChange: function onChange(e) {
-	                        return _this2.item_name = e.target.value;
-	                    } }),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Weight', type: 'number', onChange: function onChange(e) {
-	                        return _this2.item_weight = e.target.value;
-	                    } }),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Email', type: 'email', onChange: function onChange(e) {
-	                        return _this2.email = e.target.value;
-	                    } }),
-	                _react2.default.createElement(_SearchComponent2.default, { name: 'Departure address', className: 'searchInpt', text: data.departurePoint.address || '', type: 'From' }),
-	                _react2.default.createElement(_SearchComponent2.default, { name: 'Arrival address', className: 'searchInpt', text: data.arrivalPoint.address || '', type: 'To' }),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Distance', type: 'text', value: data.distance ? data.distance.text : '', readOnly: 'true' }),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Duration', type: 'text', value: data.time ? data.time.text : '', readOnly: 'true' }),
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'button-container' },
-	                    _react2.default.createElement(_PopUpComponent2.default, { onClick: this.sendData })
+	                    'h3',
+	                    null,
+	                    ' Your order with ',
+	                    data.items ? data.items[0].name : '',
+	                    ' is coming!'
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    ' It is on the way from ',
+	                    data.departurePoint.address,
+	                    ' to ',
+	                    data.arrivalPoint.address
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    ' When your order will have been arrived you will receive letter on your email : ',
+	                    data.email,
+	                    '!'
 	                )
 	            );
 	        }
@@ -56236,10 +56184,10 @@
 	    return {
 	        data: state
 	    };
-	}, { addNewOrder: _logic.addNewOrder })(InputComponent);
+	})(InputComponent);
 
 /***/ }),
-/* 702 */
+/* 701 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56326,7 +56274,7 @@
 	}, { addAddress: _logic.addAddress })(SearchComponent);
 
 /***/ }),
-/* 703 */
+/* 702 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56345,7 +56293,7 @@
 
 	var _reactRouterDom = __webpack_require__(185);
 
-	var _reactModal = __webpack_require__(704);
+	var _reactModal = __webpack_require__(703);
 
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 
@@ -56457,7 +56405,7 @@
 	})(PopUpComponent);
 
 /***/ }),
-/* 704 */
+/* 703 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56466,7 +56414,7 @@
 	  value: true
 	});
 
-	var _Modal = __webpack_require__(705);
+	var _Modal = __webpack_require__(704);
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -56476,7 +56424,7 @@
 	module.exports = exports["default"];
 
 /***/ }),
-/* 705 */
+/* 704 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56502,15 +56450,15 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _ModalPortal = __webpack_require__(706);
+	var _ModalPortal = __webpack_require__(705);
 
 	var _ModalPortal2 = _interopRequireDefault(_ModalPortal);
 
-	var _ariaAppHider = __webpack_require__(710);
+	var _ariaAppHider = __webpack_require__(709);
 
 	var ariaAppHider = _interopRequireWildcard(_ariaAppHider);
 
-	var _safeHTMLElement = __webpack_require__(712);
+	var _safeHTMLElement = __webpack_require__(711);
 
 	var _safeHTMLElement2 = _interopRequireDefault(_safeHTMLElement);
 
@@ -56728,7 +56676,7 @@
 	exports.default = Modal;
 
 /***/ }),
-/* 706 */
+/* 705 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
@@ -56751,23 +56699,23 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _focusManager = __webpack_require__(707);
+	var _focusManager = __webpack_require__(706);
 
 	var focusManager = _interopRequireWildcard(_focusManager);
 
-	var _scopeTab = __webpack_require__(709);
+	var _scopeTab = __webpack_require__(708);
 
 	var _scopeTab2 = _interopRequireDefault(_scopeTab);
 
-	var _ariaAppHider = __webpack_require__(710);
+	var _ariaAppHider = __webpack_require__(709);
 
 	var ariaAppHider = _interopRequireWildcard(_ariaAppHider);
 
-	var _classList = __webpack_require__(711);
+	var _classList = __webpack_require__(710);
 
 	var classList = _interopRequireWildcard(_classList);
 
-	var _safeHTMLElement = __webpack_require__(712);
+	var _safeHTMLElement = __webpack_require__(711);
 
 	var _safeHTMLElement2 = _interopRequireDefault(_safeHTMLElement);
 
@@ -57153,7 +57101,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 707 */
+/* 706 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57169,7 +57117,7 @@
 	exports.setupScopedFocus = setupScopedFocus;
 	exports.teardownScopedFocus = teardownScopedFocus;
 
-	var _tabbable = __webpack_require__(708);
+	var _tabbable = __webpack_require__(707);
 
 	var _tabbable2 = _interopRequireDefault(_tabbable);
 
@@ -57252,7 +57200,7 @@
 	}
 
 /***/ }),
-/* 708 */
+/* 707 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -57315,7 +57263,7 @@
 	module.exports = exports["default"];
 
 /***/ }),
-/* 709 */
+/* 708 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57325,7 +57273,7 @@
 	});
 	exports.default = scopeTab;
 
-	var _tabbable = __webpack_require__(708);
+	var _tabbable = __webpack_require__(707);
 
 	var _tabbable2 = _interopRequireDefault(_tabbable);
 
@@ -57397,7 +57345,7 @@
 	module.exports = exports["default"];
 
 /***/ }),
-/* 710 */
+/* 709 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57469,7 +57417,7 @@
 	}
 
 /***/ }),
-/* 711 */
+/* 710 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
@@ -57582,7 +57530,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 712 */
+/* 711 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57592,7 +57540,7 @@
 	});
 	exports.canUseDOM = undefined;
 
-	var _exenv = __webpack_require__(713);
+	var _exenv = __webpack_require__(712);
 
 	var _exenv2 = _interopRequireDefault(_exenv);
 
@@ -57607,7 +57555,7 @@
 	exports.default = SafeHTMLElement;
 
 /***/ }),
-/* 713 */
+/* 712 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -57653,6 +57601,78 @@
 
 
 /***/ }),
+/* 713 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(414);
+
+	var _InputComponent = __webpack_require__(714);
+
+	var _InputComponent2 = _interopRequireDefault(_InputComponent);
+
+	var _MapWithASearchBox = __webpack_require__(715);
+
+	var _MapWithASearchBox2 = _interopRequireDefault(_MapWithASearchBox);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddingComponent = function (_React$Component) {
+	    _inherits(AddingComponent, _React$Component);
+
+	    function AddingComponent(props) {
+	        _classCallCheck(this, AddingComponent);
+
+	        return _possibleConstructorReturn(this, (AddingComponent.__proto__ || Object.getPrototypeOf(AddingComponent)).call(this, props));
+	    }
+
+	    _createClass(AddingComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'map-container' },
+	                    _react2.default.createElement(_MapWithASearchBox2.default, null),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'input-data-container' },
+	                        _react2.default.createElement(_InputComponent2.default, null)
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AddingComponent;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        data: state.orderReducer
+	    };
+	})(AddingComponent);
+
+/***/ }),
 /* 714 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57670,7 +57690,123 @@
 
 	var _reactRedux = __webpack_require__(414);
 
-	var _MapAttachment = __webpack_require__(715);
+	var _logic = __webpack_require__(662);
+
+	var _SearchComponent = __webpack_require__(701);
+
+	var _SearchComponent2 = _interopRequireDefault(_SearchComponent);
+
+	var _InputSpace = __webpack_require__(699);
+
+	var _InputSpace2 = _interopRequireDefault(_InputSpace);
+
+	var _PopUpComponent = __webpack_require__(702);
+
+	var _PopUpComponent2 = _interopRequireDefault(_PopUpComponent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var InputComponent = function (_React$Component) {
+	    _inherits(InputComponent, _React$Component);
+
+	    function InputComponent(props) {
+	        _classCallCheck(this, InputComponent);
+
+	        var _this = _possibleConstructorReturn(this, (InputComponent.__proto__ || Object.getPrototypeOf(InputComponent)).call(this, props));
+
+	        _this.sendData = _this.sendData.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(InputComponent, [{
+	        key: 'sendData',
+	        value: function sendData() {
+	            this.mapInfo = this.props.data.mapReducer, this.props.addNewOrder({
+	                departurePoint: this.mapInfo.departurePoint,
+	                arrivalPoint: this.mapInfo.arrivalPoint,
+	                distance: this.mapInfo.distance,
+	                time: this.mapInfo.time,
+	                email: this.email,
+	                items: [{
+	                    name: this.item_name,
+	                    weight: this.item_weight
+	                }]
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var data = this.props.data.mapReducer;
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: ' read-only' },
+	                    _react2.default.createElement(
+	                        'h1',
+	                        { className: 'read-only-inpt' },
+	                        'Order information'
+	                    )
+	                ),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Name', type: 'text', onChange: function onChange(e) {
+	                        return _this2.item_name = e.target.value;
+	                    } }),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Weight', type: 'number', onChange: function onChange(e) {
+	                        return _this2.item_weight = e.target.value;
+	                    } }),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Email', type: 'email', onChange: function onChange(e) {
+	                        return _this2.email = e.target.value;
+	                    } }),
+	                _react2.default.createElement(_SearchComponent2.default, { name: 'Departure address', className: 'searchInpt', text: data.departurePoint.address || '', type: 'From' }),
+	                _react2.default.createElement(_SearchComponent2.default, { name: 'Arrival address', className: 'searchInpt', text: data.arrivalPoint.address || '', type: 'To' }),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Distance', type: 'text', value: data.distance ? data.distance.text : '', readOnly: 'true' }),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Duration', type: 'text', value: data.time ? data.time.text : '', readOnly: 'true' }),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'button-container' },
+	                    _react2.default.createElement(_PopUpComponent2.default, { onClick: this.sendData })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return InputComponent;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        data: state
+	    };
+	}, { addNewOrder: _logic.addNewOrder })(InputComponent);
+
+/***/ }),
+/* 715 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(414);
+
+	var _MapAttachment = __webpack_require__(716);
 
 	var _MapAttachment2 = _interopRequireDefault(_MapAttachment);
 
@@ -57684,7 +57820,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _ = __webpack_require__(716);
+	var _ = __webpack_require__(717);
 
 	var _require = __webpack_require__(450),
 	    compose = _require.compose,
@@ -57696,7 +57832,7 @@
 	    withGoogleMap = _require2.withGoogleMap,
 	    GoogleMap = _require2.GoogleMap;
 
-	var _require3 = __webpack_require__(717),
+	var _require3 = __webpack_require__(718),
 	    SearchBox = _require3.SearchBox;
 
 	var MapWithASearchBox = function (_React$Component) {
@@ -57730,6 +57866,7 @@
 	                        directions: {},
 	                        onMapMounted: function onMapMounted(ref) {
 	                            refs.map = ref;
+	                            _this2.props.addMap(ref);
 	                        },
 	                        // onBoundsChanged: () => {
 	                        //     this.setState({
@@ -57818,7 +57955,7 @@
 	                    _react2.default.createElement(_MapAttachment2.default, null)
 	                );
 	            });
-	            return _react2.default.createElement(MapWithASearchBox, { addMarker: this.props.addMarker });
+	            return _react2.default.createElement(MapWithASearchBox, { addMarker: this.props.addMarker, addMap: this.props.addMap });
 	        }
 	    }]);
 
@@ -57827,10 +57964,10 @@
 
 	;
 
-	exports.default = (0, _reactRedux.connect)(function (state) {}, { addMarker: _logic.addMarker })(MapWithASearchBox);
+	exports.default = (0, _reactRedux.connect)(function (state) {}, { addMarker: _logic.addMarker, addMap: _logic.addMap })(MapWithASearchBox);
 
 /***/ }),
-/* 715 */
+/* 716 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57871,18 +58008,29 @@
 	  }
 
 	  _createClass(MapAttachment, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.data.departurePoint.lat) this.props.addRoute(nextProps.data.departurePoint, nextProps.data.arrivalPoint);
+	      if (nextProps.data.direction === null) {
+	        var bounds = new google.maps.LatLngBounds();
+	        var markers = [new google.maps.LatLng(this.props.data.departurePoint.lat, this.props.data.departurePoint.lng), new google.maps.LatLng(this.props.data.arrivalPoint.lat, this.props.data.arrivalPoint.lng)];
+	        for (var i = 0; i < markers.length; i++) {
+	          bounds.extend(markers[i]);
+	        }
+	        this.props.data.map ? this.props.data.map.fitBounds(bounds) : {};
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var data = this.props.data;
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(Marker, { label: 'From', position: data.departurePoint,
-	          onPositionChanged: this.props.addRoute(data.departurePoint, data.arrivalPoint)
+	        data.departurePoint.lat && _react2.default.createElement(Marker, { label: 'From', position: data.departurePoint
 	        }),
-	        _react2.default.createElement(Marker, { label: 'To', position: data.arrivalPoint
-	        }),
-	        _react2.default.createElement(DirectionsRenderer, { directions: data.direction })
+	        data.arrivalPoint.lat && _react2.default.createElement(Marker, { label: 'To', position: data.arrivalPoint }),
+	        data.direction && _react2.default.createElement(DirectionsRenderer, { directions: data.direction })
 	      );
 	    }
 	  }]);
@@ -57897,7 +58045,7 @@
 	}, { addRoute: _logic.addRoute })(MapAttachment);
 
 /***/ }),
-/* 716 */
+/* 717 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -75001,7 +75149,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(369)(module)))
 
 /***/ }),
-/* 717 */
+/* 718 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict"
@@ -75037,7 +75185,7 @@
 
 	var _inherits3 = _interopRequireDefault(_inherits2)
 
-	var _isNumber2 = __webpack_require__(718)
+	var _isNumber2 = __webpack_require__(719)
 
 	var _isNumber3 = _interopRequireDefault(_isNumber2)
 
@@ -75335,7 +75483,7 @@
 
 
 /***/ }),
-/* 718 */
+/* 719 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(426),
@@ -75379,7 +75527,7 @@
 
 
 /***/ }),
-/* 719 */
+/* 720 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75390,15 +75538,15 @@
 
 	var _redux = __webpack_require__(423);
 
-	var _mapReducer = __webpack_require__(720);
+	var _mapReducer = __webpack_require__(721);
 
 	var _mapReducer2 = _interopRequireDefault(_mapReducer);
 
-	var _trackReducer = __webpack_require__(721);
+	var _trackReducer = __webpack_require__(722);
 
 	var _trackReducer2 = _interopRequireDefault(_trackReducer);
 
-	var _orderReducer = __webpack_require__(722);
+	var _orderReducer = __webpack_require__(723);
 
 	var _orderReducer2 = _interopRequireDefault(_orderReducer);
 
@@ -75411,7 +75559,7 @@
 	});
 
 /***/ }),
-/* 720 */
+/* 721 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75453,6 +75601,14 @@
 	                });
 	            }
 
+	        case types.ADD_MAP:
+	            {
+	                var data = action.payload;
+	                return _extends({}, state, {
+	                    map: data
+	                });
+	            }
+
 	        case types.ADD_FROM_MARKER:
 	            {
 	                var data = action.payload;
@@ -75479,13 +75635,22 @@
 	                });
 	            }
 
+	        case types.CLEAR_ROUTE:
+	            {
+	                return _extends({}, state, {
+	                    distance: null,
+	                    time: null,
+	                    direction: null
+	                });
+	            }
+
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ }),
-/* 721 */
+/* 722 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75528,7 +75693,7 @@
 	}
 
 /***/ }),
-/* 722 */
+/* 723 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75561,7 +75726,7 @@
 	}
 
 /***/ }),
-/* 723 */
+/* 724 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -75589,7 +75754,7 @@
 	exports['default'] = thunk;
 
 /***/ }),
-/* 724 */
+/* 725 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -75613,106 +75778,6 @@
 	    function() { return function(noop) { return noop; } }
 	);
 
-
-/***/ }),
-/* 725 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(414);
-
-	var _logic = __webpack_require__(662);
-
-	var _SearchComponent = __webpack_require__(702);
-
-	var _SearchComponent2 = _interopRequireDefault(_SearchComponent);
-
-	var _InputSpace = __webpack_require__(699);
-
-	var _InputSpace2 = _interopRequireDefault(_InputSpace);
-
-	var _PopUpComponent = __webpack_require__(703);
-
-	var _PopUpComponent2 = _interopRequireDefault(_PopUpComponent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var InputComponent = function (_React$Component) {
-	    _inherits(InputComponent, _React$Component);
-
-	    function InputComponent(props) {
-	        _classCallCheck(this, InputComponent);
-
-	        return _possibleConstructorReturn(this, (InputComponent.__proto__ || Object.getPrototypeOf(InputComponent)).call(this, props));
-	    }
-
-	    _createClass(InputComponent, [{
-	        key: 'render',
-	        value: function render() {
-	            var data = this.props.data.trackReducer;
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'info-data-container' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: ' read-only' },
-	                    _react2.default.createElement(
-	                        'h1',
-	                        { className: 'read-only-inpt' },
-	                        'Order information'
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    ' Your order with ',
-	                    data.items ? data.items[0].name : '',
-	                    ' is coming!'
-	                ),
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    ' It is on the way from ',
-	                    data.departurePoint.address,
-	                    ' to ',
-	                    data.arrivalPoint.address
-	                ),
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    ' When your order will have been arrived you will receive letter on your email : ',
-	                    data.email,
-	                    '!'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return InputComponent;
-	}(_react2.default.Component);
-
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        data: state
-	    };
-	})(InputComponent);
 
 /***/ })
 /******/ ]);

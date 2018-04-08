@@ -18,6 +18,10 @@ export function addMarker(objLatLng) {
     }
 }
 
+export function addMap(map) {
+
+    return dispatch => dispatch(mapActions.addMap(map));
+}
 
 export function addRoute(positionFrom, positionTo) {
 
@@ -26,6 +30,9 @@ export function addRoute(positionFrom, positionTo) {
             .then(
                 result => {
                     return dispatch(mapActions.addRoute(result));
+                },
+                error =>{
+                    return dispatch(mapActions.addRoute(null));
                 }
             );
     }

@@ -7,10 +7,23 @@ export function addMarker(result){
   }
 }
 
+export function addMap(result){
+  return {
+    type: types.ADD_MAP,
+    payload: result
+  }
+}
+
 export function addRoute(result) {
+  if(result)
   return {
     type: types.ADD_ROUTE,
     payload: result
+  }
+  else
+  return {
+    type: types.CLEAR_ROUTE,
+    payload: {}
   }
 }
 

@@ -4,7 +4,7 @@ import {
 } from 'react-redux';
 import MapAttachment from './MapAttachment';
 import {
-    addMarker
+    addMarker, addMap
 } from '../logic';
 const _ = require("lodash");
 const {
@@ -46,6 +46,7 @@ class MapWithASearchBox extends React.Component {
                         directions: {},
                         onMapMounted: ref => {
                             refs.map = ref;
+                            this.props.addMap(ref);
                         },
                         // onBoundsChanged: () => {
                         //     this.setState({
@@ -127,16 +128,16 @@ class MapWithASearchBox extends React.Component {
                   }}
                 />
               </SearchBox>
-              <MapAttachment />
+              <MapAttachment/>
             </GoogleMap>
         );
         return (
-          <MapWithASearchBox addMarker={this.props.addMarker}/>
+          <MapWithASearchBox addMarker={this.props.addMarker} addMap={this.props.addMap}/>
         );
     }
 };
 
 export default connect(
     state => {},
-    {addMarker}
+    {addMarker, addMap}
 )(MapWithASearchBox);

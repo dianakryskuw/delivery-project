@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TrackingComponent from './components/TrackingComponent';
 import AddingComponent from './components/AddingComponent';
+import MapWithASearchBox from './components/MapWithASearchBox';
+import DirectionComponent from './components/DirectionComponent';
 
 export default () =>(
 <BrowserRouter>
@@ -15,7 +17,7 @@ export default () =>(
    </div>
     </MuiThemeProvider>
     <Switch>
-        <Route path="/" exact component={AddingComponent} /> 
+        <Route path="/" exact component={DirectionComponent} /> 
         <Route path="/add" exact component={AddingComponent} /> 
         <Route path='/track' component={TrackingComponent} />
         <Route path='/track/:id' component={TrackingComponent} />

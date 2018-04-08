@@ -20,6 +20,14 @@ export default function setMapData(state = initialState, action) {
             }
         }
 
+        case types.ADD_MAP:{
+            var data = action.payload;
+            return {
+                ...state,
+                map:data
+            }
+        }
+
         case types.ADD_FROM_MARKER:{
             var data = action.payload;
             return {
@@ -45,7 +53,16 @@ export default function setMapData(state = initialState, action) {
                 direction: action.payload
             }
         }
-        
+
+        case types.CLEAR_ROUTE:{
+            return {
+                ...state,
+                distance: null,
+                time: null,
+                direction: null
+            }
+        }
+
         default:
             return state;
     }
