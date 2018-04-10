@@ -22029,8 +22029,10 @@
 	                null,
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _DirectionComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/add', exact: true, component: _AddingComponent2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', component: _TrackingComponent2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', component: _TrackingComponent2.default })
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', exact: true, component: _TrackingComponent2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', exact: true, render: function render(props) {
+	                        return _react2.default.createElement(_TrackingComponent2.default, props);
+	                    } })
 	            )
 	        )
 	    );
@@ -37123,7 +37125,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'input-trackdata-container' },
-	                        _react2.default.createElement(_InputTrackComponent2.default, { trackCode: this.props.data.orderReducer.orderId })
+	                        _react2.default.createElement(_InputTrackComponent2.default, { trackCode: this.props.match.params.id })
 	                    ),
 	                    this.props.data.trackReducer._id && _react2.default.createElement(_OrderInfoComponent2.default, null)
 	                )
@@ -39407,7 +39409,6 @@
 	            destination: new google.maps.LatLng(markerTo.lat, markerTo.lng),
 	            travelMode: google.maps.TravelMode.DRIVING
 	        }, function (result, status) {
-	            console.log("STATUS", status);
 	            if (status === google.maps.DirectionsStatus.OK) {
 	                resolve(result);
 	            }
@@ -53121,20 +53122,27 @@
 	        var _this = _possibleConstructorReturn(this, (InputTrackComponent.__proto__ || Object.getPrototypeOf(InputTrackComponent)).call(this, props));
 
 	        _this.getData = _this.getData.bind(_this);
-	        _this.val = _this.props.trackCode || '';
+	        _this.setData = _this.setData.bind(_this);
+	        _this.state = { val: _this.props.trackCode };
+	        _this.state.val && _this.getData();
 	        return _this;
 	    }
 
 	    _createClass(InputTrackComponent, [{
 	        key: 'getData',
 	        value: function getData() {
-	            this.props.trackByCode(this.val);
+	            this.props.trackByCode(this.state.val);
+	        }
+	    }, {
+	        key: 'setData',
+	        value: function setData(e) {
+	            this.setState({
+	                val: e.target.value
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'track-inpt' },
@@ -53147,15 +53155,13 @@
 	                        'Track your order'
 	                    )
 	                ),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Track Code', type: 'text', onChange: function onChange(e) {
-	                        return _this2.val = e.target.value;
-	                    } }),
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Track Code', type: 'text', value: this.state.val, onChange: this.setData }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'button-container' },
 	                    _react2.default.createElement(
 	                        _reactRouterDom.Link,
-	                        { to: "/track" + this.val },
+	                        { to: "/track/" + this.state.val },
 	                        _react2.default.createElement('input', { id: 'submit-btn', type: 'submit', onClick: this.getData, value: 'Track' })
 	                    )
 	                )
@@ -53167,7 +53173,9 @@
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {};
+	    return {
+	        data: state
+	    };
 	}, { trackByCode: _logic.trackByCode })(InputTrackComponent);
 
 /***/ }),
@@ -53261,7 +53269,7 @@
 
 	function trackByCode(currentData) {
 	    return function (dispatch) {
-	        _axios2.default.get('/track/' + currentData).then(function (response) {
+	        _axios2.default.get('/tracking/' + currentData).then(function (response) {
 	            if (response.data.departurePoint) {
 	                return dispatch(trackActions.trackByCode(response.data));
 	            } else alert("Please, input valid track code");
@@ -57868,12 +57876,6 @@
 	                            refs.map = ref;
 	                            _this2.props.addMap(ref);
 	                        },
-	                        // onBoundsChanged: () => {
-	                        //     this.setState({
-	                        //         bounds: refs.map.getBounds(),
-	                        //         center: refs.map.getCenter(),
-	                        //     })
-	                        // },
 	                        onSearchBoxMounted: function onSearchBoxMounted(ref) {
 	                            refs.searchBox = ref;
 	                        },
@@ -57917,14 +57919,9 @@
 	                    {
 	                        ref: props.onMapMounted,
 	                        defaultZoom: 6,
-	                        center: props.center
-	                        //   onBoundsChanged={props.onBoundsChanged}
-	                        , onClick: props.onMapClick
-	                        //defaultOptions={{styles:[{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#d6d6d6"},{"weight":"1.2"}]},{"featureType":"administrative.province","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#d6d6d6"},{"weight":".7"}]},{"featureType":"administrative.province","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"landscape.natural.landcover","elementType":"geometry.fill","stylers":[{"gamma":"2.23"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#c2c2c2"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#b6e6ff"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#76adc8"}]}]}}
-	                        //defaultOptions={{styles:[{"featureType":"all","elementType":"geometry","stylers":[{"hue":"#ff4400"},{"saturation":-68},{"lightness":-4},{"gamma":0.72}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#0077ff"},{"gamma":3.1}]},{"featureType":"poi.park","elementType":"all","stylers":[{"hue":"#44ff00"},{"saturation":-23}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"saturation":-64},{"hue":"#ff9100"},{"lightness":16},{"gamma":0.47},{"weight":2.7}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"lightness":-48},{"hue":"#ff5e00"},{"gamma":1.2},{"saturation":-23}]},{"featureType":"water","elementType":"all","stylers":[{"hue":"#00ccff"},{"gamma":0.44},{"saturation":-33}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"hue":"#007fff"},{"gamma":0.77},{"saturation":65},{"lightness":99}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"gamma":0.11},{"weight":5.6},{"saturation":99},{"hue":"#0091ff"},{"lightness":-86}]}] }}
-	                        //defaultOptions={{styles:[{"featureType":"all","elementType":"geometry","stylers":[{"hue":"#ff4400"},{"saturation":-68},{"lightness":-4},{"gamma":0.72}]},{"featureType":"administrative.land_parcel","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"gamma":"1.65"},{"visibility":"on"},{"hue":"#0077ff"},{"saturation":"7"},{"lightness":"-2"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#ff0000"}]},{"featureType":"landscape.man_made","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#98abc5"},{"lightness":"-2"},{"gamma":"1.41"},{"weight":"1.00"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"hue":"#44ff00"},{"saturation":-23}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"saturation":-64},{"hue":"#ff9100"},{"lightness":16},{"gamma":0.47},{"weight":2.7}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"lightness":-48},{"hue":"#ff5e00"},{"gamma":1.2},{"saturation":-23}]},{"featureType":"water","elementType":"all","stylers":[{"hue":"#00ccff"},{"gamma":0.44},{"saturation":-33}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"hue":"#007fff"},{"gamma":0.77},{"saturation":65},{"lightness":99}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"gamma":0.11},{"weight":5.6},{"saturation":99},{"hue":"#0091ff"},{"lightness":-86}]}] }}
-	                        //defaultOptions={{styles:[{"featureType":"all","elementType":"labels","stylers":[{"lightness":63},{"hue":"#ff0000"}]},{"featureType":"administrative","elementType":"all","stylers":[{"hue":"#000bff"},{"visibility":"on"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"administrative","elementType":"labels","stylers":[{"color":"#4a4a4a"},{"visibility":"on"}]},{"featureType":"administrative","elementType":"labels.text","stylers":[{"weight":"0.01"},{"color":"#727272"},{"visibility":"on"}]},{"featureType":"administrative.country","elementType":"labels","stylers":[{"color":"#ff0000"}]},{"featureType":"administrative.country","elementType":"labels.text","stylers":[{"color":"#ff0000"}]},{"featureType":"administrative.province","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"administrative.province","elementType":"labels.text","stylers":[{"color":"#545454"}]},{"featureType":"administrative.locality","elementType":"labels.text","stylers":[{"visibility":"on"},{"color":"#737373"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text","stylers":[{"color":"#7c7c7c"},{"weight":"0.01"}]},{"featureType":"administrative.land_parcel","elementType":"labels.text","stylers":[{"color":"#404040"}]},{"featureType":"landscape","elementType":"all","stylers":[{"lightness":16},{"hue":"#ff001a"},{"saturation":-61}]},{"featureType":"poi","elementType":"labels.text","stylers":[{"color":"#828282"},{"weight":"0.01"}]},{"featureType":"poi.government","elementType":"labels.text","stylers":[{"color":"#4c4c4c"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"hue":"#00ff91"}]},{"featureType":"poi.park","elementType":"labels.text","stylers":[{"color":"#7b7b7b"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.text","stylers":[{"color":"#999999"},{"visibility":"on"},{"weight":"0.01"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"hue":"#ff0011"},{"lightness":53}]},{"featureType":"road.highway","elementType":"labels.text","stylers":[{"color":"#626262"}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"color":"#676767"},{"weight":"0.01"}]},{"featureType":"water","elementType":"all","stylers":[{"hue":"#0055ff"}]}]}}
-	                        , defaultOptions: { styles: [{ "featureType": "all", "elementType": "labels", "stylers": [{ "lightness": 63 }, { "hue": "#ff0000" }] }, { "featureType": "administrative", "elementType": "all", "stylers": [{ "hue": "#000bff" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels", "stylers": [{ "color": "#4a4a4a" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels.text", "stylers": [{ "weight": "0.01" }, { "color": "#727272" }, { "visibility": "on" }] }, { "featureType": "administrative.country", "elementType": "labels", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text.fill", "stylers": [{ "color": "#630a0a" }] }, { "featureType": "administrative.province", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative.province", "elementType": "labels.text", "stylers": [{ "color": "#545454" }] }, { "featureType": "administrative.locality", "elementType": "labels.text", "stylers": [{ "visibility": "on" }, { "color": "#737373" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels.text", "stylers": [{ "color": "#7c7c7c" }, { "weight": "0.01" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text", "stylers": [{ "color": "#404040" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "lightness": 16 }, { "hue": "#ff001a" }, { "saturation": -61 }] }, { "featureType": "poi", "elementType": "labels.text", "stylers": [{ "color": "#828282" }, { "weight": "0.01" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#100b0b" }] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [{ "color": "#361414" }, { "visibility": "on" }] }, { "featureType": "poi.government", "elementType": "labels.text", "stylers": [{ "color": "#4c4c4c" }] }, { "featureType": "poi.park", "elementType": "all", "stylers": [{ "hue": "#00ff91" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ddee93" }] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [{ "color": "#7b7b7b" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#e8c0aa" }] }, { "featureType": "road", "elementType": "labels", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "labels.text", "stylers": [{ "color": "#999999" }, { "visibility": "on" }, { "weight": "0.01" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "hue": "#ff0011" }, { "lightness": 53 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#eaad85" }] }, { "featureType": "road.highway", "elementType": "labels.text", "stylers": [{ "color": "#626262" }] }, { "featureType": "road.arterial", "elementType": "geometry.fill", "stylers": [{ "color": "#d08d8d" }] }, { "featureType": "transit", "elementType": "labels.text", "stylers": [{ "color": "#676767" }, { "weight": "0.01" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "hue": "#0055ff" }] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#537582" }] }] }
+	                        center: props.center,
+	                        onClick: props.onMapClick,
+	                        defaultOptions: { styles: [{ "featureType": "all", "elementType": "labels", "stylers": [{ "lightness": 63 }, { "hue": "#ff0000" }] }, { "featureType": "administrative", "elementType": "all", "stylers": [{ "hue": "#000bff" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels", "stylers": [{ "color": "#4a4a4a" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels.text", "stylers": [{ "weight": "0.01" }, { "color": "#727272" }, { "visibility": "on" }] }, { "featureType": "administrative.country", "elementType": "labels", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text.fill", "stylers": [{ "color": "#630a0a" }] }, { "featureType": "administrative.province", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative.province", "elementType": "labels.text", "stylers": [{ "color": "#545454" }] }, { "featureType": "administrative.locality", "elementType": "labels.text", "stylers": [{ "visibility": "on" }, { "color": "#737373" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels.text", "stylers": [{ "color": "#7c7c7c" }, { "weight": "0.01" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text", "stylers": [{ "color": "#404040" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "lightness": 16 }, { "hue": "#ff001a" }, { "saturation": -61 }] }, { "featureType": "poi", "elementType": "labels.text", "stylers": [{ "color": "#828282" }, { "weight": "0.01" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#100b0b" }] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [{ "color": "#361414" }, { "visibility": "on" }] }, { "featureType": "poi.government", "elementType": "labels.text", "stylers": [{ "color": "#4c4c4c" }] }, { "featureType": "poi.park", "elementType": "all", "stylers": [{ "hue": "#00ff91" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ddee93" }] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [{ "color": "#7b7b7b" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#e8c0aa" }] }, { "featureType": "road", "elementType": "labels", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "labels.text", "stylers": [{ "color": "#999999" }, { "visibility": "on" }, { "weight": "0.01" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "hue": "#ff0011" }, { "lightness": 53 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#eaad85" }] }, { "featureType": "road.highway", "elementType": "labels.text", "stylers": [{ "color": "#626262" }] }, { "featureType": "road.arterial", "elementType": "geometry.fill", "stylers": [{ "color": "#d08d8d" }] }, { "featureType": "transit", "elementType": "labels.text", "stylers": [{ "color": "#676767" }, { "weight": "0.01" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "hue": "#0055ff" }] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#537582" }] }] }
 	                    },
 	                    _react2.default.createElement(
 	                        SearchBox,

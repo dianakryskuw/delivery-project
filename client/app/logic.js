@@ -58,7 +58,7 @@ export function addAddress(address, mytype) {
 
 export function trackByCode(currentData) {
     return dispatch => {
-        axios.get('/track/' + currentData).then(response => {
+        axios.get('/tracking/' + currentData).then(response => {
             if (response.data.departurePoint) {
                 return dispatch(trackActions.trackByCode(response.data));
             } else

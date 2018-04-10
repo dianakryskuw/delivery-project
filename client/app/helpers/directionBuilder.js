@@ -7,7 +7,6 @@ export default function buildDirection(markerFrom, markerTo){
         destination: new google.maps.LatLng(markerTo.lat, markerTo.lng),
         travelMode: google.maps.TravelMode.DRIVING,
         }, (result, status) => {
-            console.log("STATUS",status);
             if (status === google.maps.DirectionsStatus.OK) { 
                 resolve(result);
             } 

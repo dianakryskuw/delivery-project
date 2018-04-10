@@ -76,7 +76,7 @@ module.exports = (app) => {
            
     });
 
-    app.get('/track/:id', (req, res) => {
+    app.get('/tracking/:id', (req, res) => {
             var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
                 var oId = ObjectId(req.params.id);
                 Order.findOne({ '_id': oId }).then((order, err) => {

@@ -15,7 +15,7 @@ class TrackingComponent extends React.Component{
                 <div className="map-container">
                     <DirectionComponent/>
                 <div className="input-trackdata-container">
-                <InputTrackComponent trackCode={this.props.data.orderReducer.orderId}/>
+                <InputTrackComponent trackCode={this.props.match.params.id}/>
                 </div>
                 {this.props.data.trackReducer._id&&<OrderInfoComponent/>}
                 </div>                 
