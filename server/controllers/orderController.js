@@ -7,7 +7,7 @@ var distance = require('../helpers/distance');
 
 function initialOrder (orderData){
     orderData._id = new ObjectId();
-    orderData.price =calculatePrice(orderData.distance.value, +orderData.items[0].weight)
+    orderData.price =calculatePrice(orderData.distance.value, +orderData.items[0].weight||1)
     return orderData;
 }
 
@@ -91,5 +91,6 @@ var trackOrder = (request, response) => {
 module.exports = {
     addNewOrder,
     addNewOrderFromStore,
-    trackOrder
+    trackOrder,
+    calculatePrice
 }
