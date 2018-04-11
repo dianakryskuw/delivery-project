@@ -7,7 +7,7 @@ var controllers = require('./controllers');
 var path = require('path');
 var mongoose = require("mongoose");
 var url = "mongodb://diana_kryskuw:1@ds247078.mlab.com:47078/delivery";
-var arrivalMail = require('./helpers/sendArrivalMail');
+var sendArrivalMail = require('./helpers/sendArrivalMail');
 
 mongoose.connect(url)
 const db = mongoose.connection
@@ -53,7 +53,7 @@ app.get("/add", (request, response) => {
 
 controllers.set(app);
 
-arrivalMail.startCron.then(result=> console.log(result));
+sendArrivalMail();
 
 var port = process.env.PORT || 8800
 module.exports.start = () => app.listen(port, () => console.log('App listening on port '+ port));

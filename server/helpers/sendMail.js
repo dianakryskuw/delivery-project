@@ -18,15 +18,10 @@ var mail = {
 }
 
  smtpTransport.sendMail(mail).then((response, error) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("Message sent: " + response.message);
+    if (!error) {
+        console.log("Message sent to:  " + userEmail);
     }
-
     smtpTransport.close();
 });
 }
-module.exports = {
-    mailing
-}
+module.exports = mailing

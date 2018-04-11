@@ -15,9 +15,9 @@ class AddingComponent extends React.Component {
             <div> 
                 <div className="map-container">
                     <MapWithASearchBox/>
+                </div>
                 <div className="input-data-container">
                     <InputComponent/>
-                </div>
                 </div>
             </div>
         );

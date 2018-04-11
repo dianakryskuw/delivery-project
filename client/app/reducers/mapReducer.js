@@ -63,6 +63,10 @@ export default function setMapData(state = initialState, action) {
             }
         }
 
+        case types.RESET_MAP:{
+            return initialState;
+        }
+
         default:
             return state;
     }

@@ -21989,6 +21989,10 @@
 
 	var _DirectionComponent2 = _interopRequireDefault(_DirectionComponent);
 
+	var _Layout = __webpack_require__(727);
+
+	var _Layout2 = _interopRequireDefault(_Layout);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = function () {
@@ -21998,36 +22002,11 @@
 	        _react2.default.createElement(
 	            'div',
 	            { className: 'home' },
-	            _react2.default.createElement(
-	                _MuiThemeProvider2.default,
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'top' },
-	                    _react2.default.createElement(
-	                        _reactRouterDom.Link,
-	                        { to: '/add', className: 'my-link' },
-	                        _react2.default.createElement(
-	                            _FlatButton2.default,
-	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, className: 'my-button' },
-	                            'Add order'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactRouterDom.Link,
-	                        { to: '/track', className: 'my-link' },
-	                        _react2.default.createElement(
-	                            _FlatButton2.default,
-	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, className: 'my-button' },
-	                            'Track order'
-	                        )
-	                    )
-	                )
-	            ),
+	            _react2.default.createElement(_Layout2.default, null),
 	            _react2.default.createElement(
 	                _reactRouterDom.Switch,
 	                null,
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _DirectionComponent2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _AddingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/add', exact: true, component: _AddingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track', exact: true, component: _TrackingComponent2.default }),
 	                _react2.default.createElement(_reactRouterDom.Route, { path: '/track/:id', exact: true, render: function render(props) {
@@ -37121,14 +37100,14 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'map-container' },
-	                    _react2.default.createElement(_DirectionComponent2.default, null),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'input-trackdata-container' },
-	                        _react2.default.createElement(_InputTrackComponent2.default, { trackCode: this.props.match.params.id })
-	                    ),
-	                    this.props.data.trackReducer._id && _react2.default.createElement(_OrderInfoComponent2.default, null)
-	                )
+	                    _react2.default.createElement(_DirectionComponent2.default, null)
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-data-container' },
+	                    _react2.default.createElement(_InputTrackComponent2.default, { trackCode: this.props.match.params.id })
+	                ),
+	                this.props.data.trackReducer._id && _react2.default.createElement(_OrderInfoComponent2.default, null)
 	            );
 	        }
 	    }]);
@@ -53193,12 +53172,14 @@
 	exports.addAddress = addAddress;
 	exports.trackByCode = trackByCode;
 	exports.addNewOrder = addNewOrder;
+	exports.resetAdding = resetAdding;
+	exports.resetTracking = resetTracking;
 
 	var _reactPlacesAutocomplete = __webpack_require__(663);
 
-	var _geoLocation = __webpack_require__(668);
+	var _geocode = __webpack_require__(726);
 
-	var _geoLocation2 = _interopRequireDefault(_geoLocation);
+	var _geocode2 = _interopRequireDefault(_geocode);
 
 	var _directionBuilder = __webpack_require__(449);
 
@@ -53225,23 +53206,20 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function addMarker(objLatLng) {
-
 	    return function (dispatch) {
-	        (0, _geoLocation2.default)(objLatLng).then(function (result) {
+	        (0, _geocode2.default)(objLatLng).then(function (result) {
 	            return dispatch(mapActions.addMarker(result));
 	        });
 	    };
 	}
 
 	function addMap(map) {
-
 	    return function (dispatch) {
 	        return dispatch(mapActions.addMap(map));
 	    };
 	}
 
 	function addRoute(positionFrom, positionTo) {
-
 	    return function (dispatch) {
 	        (0, _directionBuilder2.default)(positionFrom, positionTo).then(function (result) {
 	            return dispatch(mapActions.addRoute(result));
@@ -53252,7 +53230,6 @@
 	}
 
 	function addAddress(address, mytype) {
-
 	    return function (dispatch) {
 	        (0, _reactPlacesAutocomplete.geocodeByAddress)(address).then(function (results) {
 	            return (0, _reactPlacesAutocomplete.getLatLng)(results[0]);
@@ -53270,8 +53247,8 @@
 	function trackByCode(currentData) {
 	    return function (dispatch) {
 	        _axios2.default.get('/tracking/' + currentData).then(function (response) {
-	            if (response.data.departurePoint) {
-	                return dispatch(trackActions.trackByCode(response.data));
+	            if (response.data.success) {
+	                return dispatch(trackActions.trackByCode(response.data.order));
 	            } else alert("Please, input valid track code");
 	        });
 	    };
@@ -53282,10 +53259,22 @@
 	        _axios2.default.post('/addorder', {
 	            currentData: currentData
 	        }).then(function (response) {
-	            if (response.data) {
-	                return dispatch(orderActions.addNewOrder(response.data));
+	            if (response.data.success) {
+	                return dispatch(orderActions.addNewOrder(response.data.order));
 	            }
 	        });
+	    };
+	}
+
+	function resetAdding() {
+	    return function (dispatch) {
+	        return dispatch(mapActions.resetMapInfo());
+	    };
+	}
+
+	function resetTracking() {
+	    return function (dispatch) {
+	        return dispatch(trackActions.trackByCode({}));
 	    };
 	}
 
@@ -54349,38 +54338,7 @@
 	};
 
 /***/ }),
-/* 668 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = getGeoLocation;
-	function getGeoLocation(latLngObj) {
-	    var geocoder = new google.maps.Geocoder();
-
-	    return new Promise(function (resolve, reject) {
-	        var addressData = {};
-	        geocoder.geocode({
-	            'latLng': latLngObj.latLng
-	        }, function (results, status) {
-	            if (status == google.maps.GeocoderStatus.OK) {
-	                if (results[0]) {
-	                    addressData = {
-	                        lat: latLngObj.latLng.lat(),
-	                        lng: latLngObj.latLng.lng(),
-	                        address: results[0].formatted_address
-	                    };
-	                    resolve(addressData);
-	                }
-	            }
-	        });
-	    });
-	}
-
-/***/ }),
+/* 668 */,
 /* 669 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -54394,6 +54352,7 @@
 	exports.addRoute = addRoute;
 	exports.addFromAddress = addFromAddress;
 	exports.addToAddress = addToAddress;
+	exports.resetMapInfo = resetMapInfo;
 
 	var _actionTypes = __webpack_require__(670);
 
@@ -54439,6 +54398,13 @@
 	  };
 	}
 
+	function resetMapInfo() {
+	  return {
+	    type: types.RESET_MAP,
+	    payload: {}
+	  };
+	}
+
 /***/ }),
 /* 670 */
 /***/ (function(module, exports) {
@@ -54454,6 +54420,7 @@
 	var ADD_ROUTE = exports.ADD_ROUTE = 'ADD_ROUTE';
 	var CLEAR_ROUTE = exports.CLEAR_ROUTE = 'CLEAR_ROUTE';
 	var ADD_MAP = exports.ADD_MAP = 'ADD_MAP';
+	var RESET_MAP = exports.RESET_MAP = 'RESET_MAP';
 
 	var TRACK = exports.TRACK = 'TRACK';
 
@@ -54501,6 +54468,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function addNewOrder(result) {
+	    console.log(result);
 	    return {
 	        type: types.ADD_NEW_ORDER,
 	        payload: result
@@ -56177,7 +56145,7 @@
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
-	                    ' When your order will have been arrived you will receive letter on your email : ',
+	                    ' When your order will be delivered, you will receive letter on your email : ',
 	                    data.email,
 	                    '!'
 	                )
@@ -56305,6 +56273,8 @@
 
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 
+	var _logic = __webpack_require__(662);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56372,8 +56342,7 @@
 							isOpen: this.state.modalIsOpen,
 							onAfterOpen: this.afterOpenModal,
 							onRequestClose: this.closeModal,
-							style: customStyles,
-							contentLabel: 'Example Modal'
+							style: customStyles
 						},
 						_react2.default.createElement(
 							'h1',
@@ -56384,12 +56353,12 @@
 							'p',
 							null,
 							' You can track your order with track code ',
-							this.props.data.orderId,
+							this.props.data._id,
 							' by this link:'
 						),
 						_react2.default.createElement(
 							_reactRouterDom.Link,
-							{ to: "track/" + this.props.data.orderId },
+							{ to: "track/" + this.props.data._id, onClick: this.props.resetAdding },
 							'TRACK NOW!'
 						),
 						_react2.default.createElement('p', null),
@@ -56410,7 +56379,7 @@
 		return {
 			data: state.orderReducer
 		};
-	})(PopUpComponent);
+	}, { resetAdding: _logic.resetAdding })(PopUpComponent);
 
 /***/ }),
 /* 703 */
@@ -57660,12 +57629,12 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'map-container' },
-	                    _react2.default.createElement(_MapWithASearchBox2.default, null),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'input-data-container' },
-	                        _react2.default.createElement(_InputComponent2.default, null)
-	                    )
+	                    _react2.default.createElement(_MapWithASearchBox2.default, null)
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-data-container' },
+	                    _react2.default.createElement(_InputComponent2.default, null)
 	                )
 	            );
 	        }
@@ -75641,6 +75610,11 @@
 	                });
 	            }
 
+	        case types.RESET_MAP:
+	            {
+	                return initialState;
+	            }
+
 	        default:
 	            return state;
 	    }
@@ -75698,7 +75672,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = setMapData;
+	exports.default = setOrderData;
 
 	var _actionTypes = __webpack_require__(670);
 
@@ -75706,16 +75680,24 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	var initialState = {};
+	var initialState = {
+	    departurePoint: {},
+	    arrivalPoint: {},
+	    distance: {},
+	    time: {},
+	    direction: {}
+	};
 
-	function setMapData() {
+	function setOrderData() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	    var action = arguments[1];
 
 	    switch (action.type) {
-
 	        case types.ADD_NEW_ORDER:
-	            return action.payload;
+	            {
+	                console.log(action.payload);
+	                return action.payload;
+	            }
 
 	        default:
 	            return state;
@@ -75775,6 +75757,124 @@
 	    function() { return function(noop) { return noop; } }
 	);
 
+
+/***/ }),
+/* 726 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = geocode;
+	function geocode(latLngObj) {
+	    var geocoder = new google.maps.Geocoder();
+
+	    return new Promise(function (resolve, reject) {
+	        var addressData = {};
+	        geocoder.geocode({
+	            'latLng': latLngObj.latLng
+	        }, function (results, status) {
+	            if (status == google.maps.GeocoderStatus.OK) {
+	                if (results[0]) {
+	                    addressData = {
+	                        lat: latLngObj.latLng.lat(),
+	                        lng: latLngObj.latLng.lng(),
+	                        address: results[0].formatted_address
+	                    };
+	                    resolve(addressData);
+	                }
+	            }
+	        });
+	    });
+	}
+
+/***/ }),
+/* 727 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(414);
+
+	var _reactRouterDom = __webpack_require__(185);
+
+	var _FlatButton = __webpack_require__(244);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _MuiThemeProvider = __webpack_require__(366);
+
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+	var _logic = __webpack_require__(662);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Layout = function (_React$Component) {
+	    _inherits(Layout, _React$Component);
+
+	    function Layout(props) {
+	        _classCallCheck(this, Layout);
+
+	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
+	    }
+
+	    _createClass(Layout, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                _MuiThemeProvider2.default,
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'top' },
+	                    _react2.default.createElement(
+	                        _reactRouterDom.Link,
+	                        { to: '/add', className: 'my-link' },
+	                        _react2.default.createElement(
+	                            _FlatButton2.default,
+	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetTracking, className: 'my-button' },
+	                            'Add order'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouterDom.Link,
+	                        { to: '/track', className: 'my-link' },
+	                        _react2.default.createElement(
+	                            _FlatButton2.default,
+	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetAdding, className: 'my-button' },
+	                            'Track order'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Layout;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, { resetAdding: _logic.resetAdding, resetTracking: _logic.resetTracking })(Layout);
 
 /***/ })
 /******/ ]);

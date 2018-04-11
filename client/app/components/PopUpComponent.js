@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import Modal from 'react-modal'
+import { resetAdding } from '../logic'
 
 const customStyles = {
 	content : {
@@ -49,12 +50,11 @@ class PopUpComponent extends React.Component{
 			onAfterOpen={this.afterOpenModal}
 			onRequestClose={this.closeModal}
 			style={customStyles}
-			contentLabel="Example Modal"
 		  >
 
 			<h1>Thank you for your order!</h1>
-			<p> You can track your order with track code {this.props.data.orderId} by this link:</p>
-				<Link to={"track/"+this.props.data.orderId}>TRACK NOW!</Link>
+			<p> You can track your order with track code {this.props.data._id} by this link:</p>
+				<Link to={"track/"+this.props.data._id} onClick={this.props.resetAdding}>TRACK NOW!</Link>
 				<p/>
 			<button onClick={this.closeModal}>Close</button>
 		  </Modal>
@@ -65,5 +65,6 @@ class PopUpComponent extends React.Component{
 export default connect(
     state => ({
         data:state.orderReducer
-    })
+    }),
+    {resetAdding}
 )(PopUpComponent);

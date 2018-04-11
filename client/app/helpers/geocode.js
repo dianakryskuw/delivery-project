@@ -1,5 +1,5 @@
 
-export default function getGeoLocation(latLngObj){
+export default function geocode(latLngObj){
     var geocoder = new google.maps.Geocoder();
 
     return new Promise((resolve, reject) => {

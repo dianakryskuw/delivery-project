@@ -1,32 +1,23 @@
 var cron = require('node-cron');
-var mail = require('./sendMail');
-var mongoose = require("mongoose");
-var mongooseSchema = require('../controllers/schema');
+var mailing = require('./sendMail');
 var text = require('../constants/mailText');
 var Promise = require('bluebird');
-var schedule = Promise.promisify(require('node-cron').schedule);
-var Order = mongoose.model("Order", mongooseSchema.orderScheme, "order");
-var currentDate=new Date();
+var Order = require('../models/order');
 
 function findOrders(){
-        Order.find({ 'arrivalDate': {$lt:currentDate}, 'emailSent':false}).then((orders, err) => {
+        Order.find({ 'status': 'delivered', 'emailSent':false}).then((orders, err) => {
           if (!err) {
             orders.forEach(order => {
               var mailHTML=text.sendArrivedOrderMail(order._id);
-              mail.mailing(order.email,mailHTML);
+              mailing(order.email,mailHTML);
               order.set({ emailSent: true });
-              order.save(function (err, updatedOrder) {
-                if (err) console.log(err);
-                else console.log(updatedOrder);
-              });
+              order.save();
             });
           }
           });
-  console.log('checking order status 5 minute');
+  console.log('checking order status every minute');
 }
 
-var startCron = new Promise(()=>{
-     cron.schedule('*/5 * * * *', findOrders)
-});
+var startCron = () => cron.schedule('*/1 * * * *', findOrders);
 
-module.exports = {startCron}
+module.exports = startCron

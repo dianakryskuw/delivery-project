@@ -40,3 +40,10 @@ export function addToAddress(result) {
     payload: result
   }
 }
+
+export function resetMapInfo() {
+  return {
+    type: types.RESET_MAP,
+    payload: {}
+  }
+}

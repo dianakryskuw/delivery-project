@@ -33,7 +33,7 @@ var orderScheme = new Schema({
       value: Number
     },
     price: Number,
-    date:Date,
+    date: { type: Date, default: new Date()},
     arrivalDate: { type: Date, default: null },
     email: {
       type: String,
@@ -41,13 +41,14 @@ var orderScheme = new Schema({
     },
     status:{
       type: String,
-      enum: ['in the store', 'on the way','delivered']},
+      enum: ['in the store', 'on the way','delivered'],
+      default:'in the store'
+    },
     items: [
         {
             name: {
               type: String,
-              required: true,
-              default:'something'
+              required: true
             },
             weight: { type: Number, default: 1 },
         }
@@ -55,4 +56,6 @@ var orderScheme = new Schema({
     emailSent:{type:Boolean,default:false   }
   })
   
-  module.exports={orderScheme}
+  var Order = mongoose.model("Order", orderScheme, "order");
+
+  module.exports = Order

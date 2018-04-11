@@ -12,6 +12,4 @@ var distance = (distanceParams) => new Promise((resolve, reject) => {
         resolve(result);
     });
 });
-module.exports = {
-    distance
-}
+module.exports = distance

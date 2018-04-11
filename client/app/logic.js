@@ -1,8 +1,5 @@
-import {
-    geocodeByAddress,
-    getLatLng
-} from 'react-places-autocomplete'
-import getGeoLocation from './helpers/geoLocation';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import geocode from './helpers/geocode';
 import buildDirection from './helpers/directionBuilder';
 import * as mapActions from './actions/mapActions'
 import * as trackActions from './actions/trackActions'
@@ -10,21 +7,18 @@ import * as orderActions from './actions/orderActions'
 import axios from 'axios';
 
 export function addMarker(objLatLng) {
-
     return dispatch => {
-        getGeoLocation(objLatLng).then(result => {
+        geocode(objLatLng).then(result => {
             return dispatch(mapActions.addMarker(result));
         });
     }
 }
 
 export function addMap(map) {
-
     return dispatch => dispatch(mapActions.addMap(map));
 }
 
 export function addRoute(positionFrom, positionTo) {
-
     return dispatch => {
         buildDirection(positionFrom, positionTo)
             .then(
@@ -38,9 +32,7 @@ export function addRoute(positionFrom, positionTo) {
     }
 }
 
-
 export function addAddress(address, mytype) {
-
     return dispatch => {
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
@@ -59,8 +51,8 @@ export function addAddress(address, mytype) {
 export function trackByCode(currentData) {
     return dispatch => {
         axios.get('/tracking/' + currentData).then(response => {
-            if (response.data.departurePoint) {
-                return dispatch(trackActions.trackByCode(response.data));
+            if (response.data.success) {
+                return dispatch(trackActions.trackByCode(response.data.order));
             } else
                 alert("Please, input valid track code");
         });
@@ -72,9 +64,17 @@ export function addNewOrder(currentData) {
         axios.post('/addorder', {
             currentData
         }).then(function(response) {
-            if (response.data) {
-                return dispatch(orderActions.addNewOrder(response.data));
+            if (response.data.success) {
+                return dispatch(orderActions.addNewOrder(response.data.order));
             }
         });
     }
+}
+
+export function resetAdding() {
+    return dispatch => dispatch(mapActions.resetMapInfo());
+}
+
+export function resetTracking() {
+    return dispatch => dispatch(trackActions.trackByCode({}));
 }

@@ -23,7 +23,7 @@ class InputComponent extends React.Component {
             </div>
             <h3> Your order with {data.items?data.items[0].name:''} is coming!</h3>
             <p> It is on the way from {data.departurePoint.address} to {data.arrivalPoint.address}</p>
-            <p> When your order will have been arrived you will receive letter on your email : {data.email}!</p>
+            <p> When your order will be delivered, you will receive letter on your email : {data.email}!</p>
           </div>
         );
     }
