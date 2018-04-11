@@ -79,6 +79,12 @@ var addNewOrderFromStore = (request, response) => {
                     trackCode: trackUrl + order._id
                 });
             }
+        })
+        .catch(e=>{
+            response.send({
+                success: false,
+                message: 'Incorrect data in request'
+            });
         });
     })
 
