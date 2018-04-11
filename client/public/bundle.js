@@ -39387,11 +39387,10 @@
 	        }, function (result, status) {
 	            if (status === google.maps.DirectionsStatus.OK) {
 	                resolve(result);
+	            } else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
+	                var error = new Error("Incorrect data for route");
+	                reject(error);
 	            }
-	            // else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) { 
-	            //     let error = new Error("Incorrect data for route")
-	            //     reject(error);
-	            // }
 	        });
 	    });
 	}
