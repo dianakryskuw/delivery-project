@@ -155,7 +155,7 @@ label 				 {
   -webkit-transition:0.2s ease all;
 }
 /* active state */
-input:hover ~ label, input:valid ~ label, input:active ~ label{
+input:hover ~ label, input:active ~ label, input:valid ~ label{
   top:-55%;
   font-size:16px;
   color:rgb(24, 82, 94);

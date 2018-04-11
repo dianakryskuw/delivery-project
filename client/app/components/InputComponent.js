@@ -33,21 +33,21 @@ class InputComponent extends React.Component {
     render() {
         var data = this.props.data.mapReducer;
         return(
-          <div>
-            <div class=" read-only">    
-              <h1 className="read-only-inpt">Order information</h1>
+        <div>
+            <div class=" read-only">
+                <h1 className="read-only-inpt">Order information</h1>
             </div>
-            <InputSpace name= "Name" type="text" onChange={(e)=>this.item_name=e.target.value} />
-            <InputSpace name= "Weight" type="number" onChange={(e)=>this.item_weight=e.target.value} />
-            <InputSpace name= "Email" type="email" onChange={(e)=>this.email=e.target.value} />
-            <SearchComponent name="Departure address" className="searchInpt" text={data.departurePoint.address||''} type='From'/>
-            <SearchComponent name="Arrival address" className="searchInpt" text={data.arrivalPoint.address||''} type='To'/>
-            <InputSpace name= "Distance" type="text" value={data.distance?data.distance.text:''} readOnly="true"/>
-            <InputSpace name= "Duration" type="text" value={data.time?data.time.text:''} readOnly="true"/>
+            <InputSpace name="Name of order item" type="text" onChange={(e)=>this.item_name=e.target.value} />
+            <InputSpace name="Weight of order item" type="number" onChange={(e)=>this.item_weight=e.target.value} />
+            <InputSpace name="Email" type="email" onChange={(e)=>this.email=e.target.value} />
+            <SearchComponent name="Departure address" className="searchInpt" text={data.departurePoint.address|| ''} type='From' />
+            <SearchComponent name="Arrival address" className="searchInpt" text={data.arrivalPoint.address|| ''} type='To' />
+            <InputSpace name="Distance" type="text" value={data.distance?data.distance.text: ''} readOnly="true" />
+            <InputSpace name="Duration" type="text" value={data.time?data.time.text: ''} readOnly="true" />
             <div class="button-container">
-              <PopUpComponent onClick={this.sendData} />
+                <PopUpComponent onClick={this.sendData} />
             </div>
-          </div>
+        </div>
         );
     }
 }

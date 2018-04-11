@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 import InputComponent from './InputComponent';
 import MapWithASearchBox from './MapWithASearchBox';
 
@@ -12,19 +10,15 @@ class AddingComponent extends React.Component {
 
     render() {
         return (
-            <div> 
-                <div className="map-container">
-                    <MapWithASearchBox/>
-                </div>
-                <div className="input-data-container">
-                    <InputComponent/>
-                </div>
+        <div>
+            <div className="map-container">
+                <MapWithASearchBox/>
             </div>
+            <div className="input-data-container">
+                <InputComponent/>
+            </div>
+        </div>
         );
     }
 }
-export default connect(
-    state => ({
-        data: state.orderReducer
-    })
-)(AddingComponent);
+export default AddingComponent

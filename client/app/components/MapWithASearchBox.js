@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-    connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 import MapAttachment from './MapAttachment';
-import {
-    addMarker, addMap
-} from '../logic';
+import { addMarker, addMap } from '../logic';
 const _ = require("lodash");
 const {
     compose,
@@ -13,13 +9,10 @@ const {
     lifecycle
 } = require("recompose");
 const {
-    withScriptjs,
     withGoogleMap,
     GoogleMap
 } = require("react-google-maps");
-const {
-    SearchBox
-} = require("react-google-maps/lib/components/places/SearchBox");
+const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 
 class MapWithASearchBox extends React.Component {
     constructor(props) {
@@ -65,7 +58,6 @@ class MapWithASearchBox extends React.Component {
                         onPlacesChanged: () => {
                             const places = refs.searchBox.getPlaces();
                             const bounds = new google.maps.LatLngBounds();
-
                             places.forEach(place => {
                                 if (place.geometry.viewport) {
                                     bounds.union(place.geometry.viewport)
@@ -127,6 +119,8 @@ class MapWithASearchBox extends React.Component {
 };
 
 export default connect(
-    state => {},
+    state => ({
+        
+    }),
     {addMarker, addMap}
 )(MapWithASearchBox);

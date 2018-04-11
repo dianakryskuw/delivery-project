@@ -77,9 +77,9 @@
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk2.default)));
 
 	_reactDom2.default.render(_react2.default.createElement(
-	  _reactRedux.Provider,
-	  { store: store },
-	  _react2.default.createElement(_routes2.default, null)
+	    _reactRedux.Provider,
+	    { store: store },
+	    _react2.default.createElement(_routes2.default, null)
 	), document.getElementById('root'));
 
 /***/ }),
@@ -39308,7 +39308,6 @@
 	    lifecycle = _require.lifecycle;
 
 	var _require2 = __webpack_require__(452),
-	    withScriptjs = _require2.withScriptjs,
 	    withGoogleMap = _require2.withGoogleMap,
 	    GoogleMap = _require2.GoogleMap,
 	    DirectionsRenderer = _require2.DirectionsRenderer;
@@ -39339,8 +39338,6 @@
 	                        return _this2.setState({
 	                            directions: result
 	                        });
-	                    }).catch(function (e) {
-	                        console.log('ERROR', e);
 	                    });
 	                }
 	            }))(function (props) {
@@ -39351,7 +39348,7 @@
 	                        defaultCenter: new google.maps.LatLng(49.84075020419229, 24.030532836914062),
 	                        defaultOptions: { styles: [{ "featureType": "all", "elementType": "labels", "stylers": [{ "lightness": 63 }, { "hue": "#ff0000" }] }, { "featureType": "administrative", "elementType": "all", "stylers": [{ "hue": "#000bff" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels", "stylers": [{ "color": "#4a4a4a" }, { "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels.text", "stylers": [{ "weight": "0.01" }, { "color": "#727272" }, { "visibility": "on" }] }, { "featureType": "administrative.country", "elementType": "labels", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text", "stylers": [{ "color": "#ff0000" }] }, { "featureType": "administrative.country", "elementType": "labels.text.fill", "stylers": [{ "color": "#630a0a" }] }, { "featureType": "administrative.province", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative.province", "elementType": "labels.text", "stylers": [{ "color": "#545454" }] }, { "featureType": "administrative.locality", "elementType": "labels.text", "stylers": [{ "visibility": "on" }, { "color": "#737373" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels.text", "stylers": [{ "color": "#7c7c7c" }, { "weight": "0.01" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text", "stylers": [{ "color": "#404040" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "lightness": 16 }, { "hue": "#ff001a" }, { "saturation": -61 }] }, { "featureType": "poi", "elementType": "labels.text", "stylers": [{ "color": "#828282" }, { "weight": "0.01" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#100b0b" }] }, { "featureType": "poi.government", "elementType": "geometry.fill", "stylers": [{ "color": "#361414" }, { "visibility": "on" }] }, { "featureType": "poi.government", "elementType": "labels.text", "stylers": [{ "color": "#4c4c4c" }] }, { "featureType": "poi.park", "elementType": "all", "stylers": [{ "hue": "#00ff91" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ddee93" }] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [{ "color": "#7b7b7b" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#e8c0aa" }] }, { "featureType": "road", "elementType": "labels", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "labels.text", "stylers": [{ "color": "#999999" }, { "visibility": "on" }, { "weight": "0.01" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "hue": "#ff0011" }, { "lightness": 53 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#eaad85" }] }, { "featureType": "road.highway", "elementType": "labels.text", "stylers": [{ "color": "#626262" }] }, { "featureType": "road.arterial", "elementType": "geometry.fill", "stylers": [{ "color": "#d08d8d" }] }, { "featureType": "transit", "elementType": "labels.text", "stylers": [{ "color": "#676767" }, { "weight": "0.01" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "hue": "#0055ff" }] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#537582" }] }] }
 	                    },
-	                    _react2.default.createElement(DirectionsRenderer, { directions: props.directions })
+	                    props.directions && _react2.default.createElement(DirectionsRenderer, { directions: props.directions })
 	                );
 	            });
 	            return _react2.default.createElement(DirectionComponent, { data: this.props.data });
@@ -39391,10 +39388,10 @@
 	            if (status === google.maps.DirectionsStatus.OK) {
 	                resolve(result);
 	            }
-	            if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
-	                var error = new Error("Incorrect data for route");
-	                reject(error);
-	            }
+	            // else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) { 
+	            //     let error = new Error("Incorrect data for route")
+	            //     reject(error);
+	            // }
 	        });
 	    });
 	}
@@ -53152,9 +53149,7 @@
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        data: state
-	    };
+	    return {};
 	}, { trackByCode: _logic.trackByCode })(InputTrackComponent);
 
 /***/ }),
@@ -53249,7 +53244,10 @@
 	        _axios2.default.get('/tracking/' + currentData).then(function (response) {
 	            if (response.data.success) {
 	                return dispatch(trackActions.trackByCode(response.data.order));
-	            } else alert("Please, input valid track code");
+	            } else {
+	                alert("Please, input a valid track code");
+	                return dispatch(trackActions.trackByCode({}));
+	            }
 	        });
 	    };
 	}
@@ -53261,6 +53259,8 @@
 	        }).then(function (response) {
 	            if (response.data.success) {
 	                return dispatch(orderActions.addNewOrder(response.data.order));
+	            } else {
+	                alert("Sorry, your order data is not valid");
 	            }
 	        });
 	    };
@@ -54499,7 +54499,6 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function addNewOrder(result) {
-	    console.log(result);
 	    return {
 	        type: types.ADD_NEW_ORDER,
 	        payload: result
@@ -56113,18 +56112,6 @@
 
 	var _logic = __webpack_require__(662);
 
-	var _SearchComponent = __webpack_require__(701);
-
-	var _SearchComponent2 = _interopRequireDefault(_SearchComponent);
-
-	var _InputSpace = __webpack_require__(699);
-
-	var _InputSpace2 = _interopRequireDefault(_InputSpace);
-
-	var _PopUpComponent = __webpack_require__(702);
-
-	var _PopUpComponent2 = _interopRequireDefault(_PopUpComponent);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56166,7 +56153,7 @@
 	                    ' is coming!'
 	                ),
 	                _react2.default.createElement(
-	                    'p',
+	                    'h5',
 	                    null,
 	                    ' It is on the way from ',
 	                    data.departurePoint.address,
@@ -56174,7 +56161,7 @@
 	                    data.arrivalPoint.address
 	                ),
 	                _react2.default.createElement(
-	                    'p',
+	                    'h4',
 	                    null,
 	                    ' When your order will be delivered, you will receive letter on your email : ',
 	                    data.email,
@@ -56367,7 +56354,7 @@
 					'div',
 					null,
 					_react2.default.createElement('input', { id: 'submit-btn', onClick: this.openModal, value: 'Add order' }),
-					_react2.default.createElement(
+					this.props.data._id && _react2.default.createElement(
 						_reactModal2.default,
 						{
 							isOpen: this.state.modalIsOpen,
@@ -57674,11 +57661,7 @@
 	    return AddingComponent;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {
-	        data: state.orderReducer
-	    };
-	})(AddingComponent);
+	exports.default = AddingComponent;
 
 /***/ }),
 /* 714 */
@@ -57765,10 +57748,10 @@
 	                        'Order information'
 	                    )
 	                ),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Name', type: 'text', onChange: function onChange(e) {
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Name of order item', type: 'text', onChange: function onChange(e) {
 	                        return _this2.item_name = e.target.value;
 	                    } }),
-	                _react2.default.createElement(_InputSpace2.default, { name: 'Weight', type: 'number', onChange: function onChange(e) {
+	                _react2.default.createElement(_InputSpace2.default, { name: 'Weight of order item', type: 'number', onChange: function onChange(e) {
 	                        return _this2.item_weight = e.target.value;
 	                    } }),
 	                _react2.default.createElement(_InputSpace2.default, { name: 'Email', type: 'email', onChange: function onChange(e) {
@@ -57836,7 +57819,6 @@
 	    lifecycle = _require.lifecycle;
 
 	var _require2 = __webpack_require__(452),
-	    withScriptjs = _require2.withScriptjs,
 	    withGoogleMap = _require2.withGoogleMap,
 	    GoogleMap = _require2.GoogleMap;
 
@@ -57893,7 +57875,6 @@
 	                        onPlacesChanged: function onPlacesChanged() {
 	                            var places = refs.searchBox.getPlaces();
 	                            var bounds = new google.maps.LatLngBounds();
-
 	                            places.forEach(function (place) {
 	                                if (place.geometry.viewport) {
 	                                    bounds.union(place.geometry.viewport);
@@ -57961,7 +57942,9 @@
 
 	;
 
-	exports.default = (0, _reactRedux.connect)(function (state) {}, { addMarker: _logic.addMarker, addMap: _logic.addMap })(MapWithASearchBox);
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, { addMarker: _logic.addMarker, addMap: _logic.addMap })(MapWithASearchBox);
 
 /***/ }),
 /* 716 */
@@ -57970,7 +57953,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -57996,49 +57979,50 @@
 	    DirectionsRenderer = _require.DirectionsRenderer;
 
 	var MapAttachment = function (_React$Component) {
-	  _inherits(MapAttachment, _React$Component);
+	    _inherits(MapAttachment, _React$Component);
 
-	  function MapAttachment(props) {
-	    _classCallCheck(this, MapAttachment);
+	    function MapAttachment(props) {
+	        _classCallCheck(this, MapAttachment);
 
-	    return _possibleConstructorReturn(this, (MapAttachment.__proto__ || Object.getPrototypeOf(MapAttachment)).call(this, props));
-	  }
+	        return _possibleConstructorReturn(this, (MapAttachment.__proto__ || Object.getPrototypeOf(MapAttachment)).call(this, props));
+	    }
 
-	  _createClass(MapAttachment, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.data.departurePoint.lat) this.props.addRoute(nextProps.data.departurePoint, nextProps.data.arrivalPoint);
-	      if (nextProps.data.direction === null) {
-	        var bounds = new google.maps.LatLngBounds();
-	        var markers = [new google.maps.LatLng(this.props.data.departurePoint.lat, this.props.data.departurePoint.lng), new google.maps.LatLng(this.props.data.arrivalPoint.lat, this.props.data.arrivalPoint.lng)];
-	        for (var i = 0; i < markers.length; i++) {
-	          bounds.extend(markers[i]);
+	    _createClass(MapAttachment, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (nextProps.data.departurePoint.lat && nextProps.data.arrivalPoint.lat) {
+	                this.props.addRoute(nextProps.data.departurePoint, nextProps.data.arrivalPoint);
+	            }
+	            if (nextProps.data.direction === null) {
+	                var bounds = new google.maps.LatLngBounds();
+	                var markers = [new google.maps.LatLng(this.props.data.departurePoint.lat, this.props.data.departurePoint.lng), new google.maps.LatLng(this.props.data.arrivalPoint.lat, this.props.data.arrivalPoint.lng)];
+	                for (var i = 0; i < markers.length; i++) {
+	                    bounds.extend(markers[i]);
+	                }
+	                this.props.data.map ? this.props.data.map.fitBounds(bounds) : {};
+	            }
 	        }
-	        this.props.data.map ? this.props.data.map.fitBounds(bounds) : {};
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var data = this.props.data;
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        data.departurePoint.lat && _react2.default.createElement(Marker, { label: 'From', position: data.departurePoint
-	        }),
-	        data.arrivalPoint.lat && _react2.default.createElement(Marker, { label: 'To', position: data.arrivalPoint }),
-	        data.direction && _react2.default.createElement(DirectionsRenderer, { directions: data.direction })
-	      );
-	    }
-	  }]);
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var data = this.props.data;
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                data.departurePoint.lat && _react2.default.createElement(Marker, { label: 'From', position: data.departurePoint }),
+	                data.arrivalPoint.lat && _react2.default.createElement(Marker, { label: 'To', position: data.arrivalPoint }),
+	                data.direction && _react2.default.createElement(DirectionsRenderer, { directions: data.direction })
+	            );
+	        }
+	    }]);
 
-	  return MapAttachment;
+	    return MapAttachment;
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(function (state) {
-	  return {
-	    data: state.mapReducer
-	  };
+	    return {
+	        data: state.mapReducer
+	    };
 	}, { addRoute: _logic.addRoute })(MapAttachment);
 
 /***/ }),
@@ -75812,7 +75796,6 @@
 	    switch (action.type) {
 	        case types.ADD_NEW_ORDER:
 	            {
-	                console.log(action.payload);
 	                return action.payload;
 	            }
 

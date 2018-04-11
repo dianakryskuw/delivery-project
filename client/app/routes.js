@@ -11,13 +11,13 @@ import Layout from './components/Layout';
 export default () =>(
 <BrowserRouter>
     <div className="home">
-    <Layout />
-    <Switch>
-        <Route path="/" exact component={AddingComponent} /> 
-        <Route path="/add" exact component={AddingComponent} /> 
-        <Route path='/track' exact component={TrackingComponent} />
-        <Route path='/track/:id' exact render={(props)=>(<TrackingComponent {...props} />)} />
-    </Switch>
+        <Layout />
+        <Switch>
+            <Route path="/" exact component={AddingComponent} /> 
+            <Route path="/add" exact component={AddingComponent} /> 
+            <Route path='/track' exact component={TrackingComponent} />
+            <Route path='/track/:id' exact render={(props)=>(<TrackingComponent {...props} />)} />
+        </Switch>
     </div>
 </BrowserRouter>
 );

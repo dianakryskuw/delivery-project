@@ -10,10 +10,10 @@ export default function buildDirection(markerFrom, markerTo){
             if (status === google.maps.DirectionsStatus.OK) { 
                 resolve(result);
             } 
-            if (status === google.maps.DirectionsStatus.ZERO_RESULTS) { 
-                let error = new Error("Incorrect data for route")
-                reject(error);
-            }
+            // else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) { 
+            //     let error = new Error("Incorrect data for route")
+            //     reject(error);
+            // }
         });
     });
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Modal from 'react-modal'
 import { resetAdding } from '../logic'
 
@@ -43,25 +43,25 @@ class PopUpComponent extends React.Component{
   
 	render() {
 	  return (
-		<div>
-			 <input id="submit-btn" onClick={this.openModal} value="Add order"/>
-		  <Modal
-			isOpen={this.state.modalIsOpen}
-			onAfterOpen={this.afterOpenModal}
-			onRequestClose={this.closeModal}
-			style={customStyles}
-		  >
-
-			<h1>Thank you for your order!</h1>
-			<p> You can track your order with track code {this.props.data._id} by this link:</p>
-				<Link to={"track/"+this.props.data._id} onClick={this.props.resetAdding}>TRACK NOW!</Link>
-				<p/>
-			<button onClick={this.closeModal}>Close</button>
-		  </Modal>
-		</div>
+			<div>
+				<input id="submit-btn" onClick={this.openModal} value="Add order"/>
+				{ this.props.data._id && <Modal
+				isOpen={this.state.modalIsOpen}
+				onAfterOpen={this.afterOpenModal}
+				onRequestClose={this.closeModal}
+				style={customStyles}
+				>
+					<h1>Thank you for your order!</h1>
+					<p> You can track your order with track code {this.props.data._id} by this link:</p>
+					<Link to={"track/"+this.props.data._id} onClick={this.props.resetAdding}>TRACK NOW!</Link>
+					<p/>
+					<button onClick={this.closeModal}>Close</button>
+		  	</Modal> }
+			</div>
 	  );
 	}
-  }
+}
+
 export default connect(
     state => ({
         data:state.orderReducer

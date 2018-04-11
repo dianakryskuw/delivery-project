@@ -53,8 +53,11 @@ export function trackByCode(currentData) {
         axios.get('/tracking/' + currentData).then(response => {
             if (response.data.success) {
                 return dispatch(trackActions.trackByCode(response.data.order));
-            } else
-                alert("Please, input valid track code");
+            } 
+            else{
+                alert("Please, input a valid track code");
+                return dispatch(trackActions.trackByCode({}));
+            }
         });
     }
 }
@@ -66,6 +69,9 @@ export function addNewOrder(currentData) {
         }).then(function(response) {
             if (response.data.success) {
                 return dispatch(orderActions.addNewOrder(response.data.order));
+            }
+            else{
+                alert("Sorry, your order data is not valid");
             }
         });
     }

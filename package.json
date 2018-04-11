@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha",
+    "test": "node ./node_modules/.bin/mocha",
     "prettier-watch": "onchange '**/*.js' -- prettier --write {{changed}}",
     "start": "node index.js",
     "build": "webpack --config webpack.config.prod.js",

@@ -23,7 +23,7 @@ class SearchComponent extends React.Component {
       <div class="group"> 
         <PlacesAutocomplete  classNames={{ autocompleteContainer: 'ac-container', input:'my-inpt' }} inputProps={inputProps} onSelect={(event) => this.props.addAddress(event, this.props.type)}/>
         <label >{this.props.name}</label>
-      <span class="highlight"></span>
+        <span class="highlight"></span>
         <span class="bar"></span>
       </div>
     )

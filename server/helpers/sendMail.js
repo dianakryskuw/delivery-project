@@ -10,18 +10,18 @@ var smtpTransport = mailer.createTransport({
 });
 
 mailing = (userEmail, mailHTML) => {
-var mail = {
-    from: "Delivery Service <great.delivery.service@gmail.com>",
-    to: userEmail,
-    subject: "Order Information",
-    html: mailHTML
-}
-
- smtpTransport.sendMail(mail).then((response, error) => {
-    if (!error) {
-        console.log("Message sent to:  " + userEmail);
+    var mail = {
+        from: "Delivery Service <great.delivery.service@gmail.com>",
+        to: userEmail,
+        subject: "Order Information",
+        html: mailHTML
     }
-    smtpTransport.close();
-});
+
+    smtpTransport.sendMail(mail).then((response, error) => {
+        if (!error) {
+            console.log("Message sent to:  " + userEmail);
+        }
+        smtpTransport.close();
+    });
 }
 module.exports = mailing

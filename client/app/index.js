@@ -13,8 +13,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
-<Provider store={store}>
-    <Routes/>
-</Provider>,
- document.getElementById('root')
+    <Provider store={store}>
+        <Routes/>
+    </Provider>,
+    document.getElementById('root')
 );

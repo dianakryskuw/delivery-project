@@ -38,7 +38,6 @@ class InputTrackComponent extends React.Component{
 
 export default connect(
     state => ({
-        data:state
     }),
     {trackByCode}
   )(InputTrackComponent);
