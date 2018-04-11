@@ -62,15 +62,15 @@
 
 	var _redux = __webpack_require__(423);
 
-	var _reducers = __webpack_require__(720);
+	var _reducers = __webpack_require__(721);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _reduxThunk = __webpack_require__(724);
+	var _reduxThunk = __webpack_require__(725);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxDevtoolsExtension = __webpack_require__(725);
+	var _reduxDevtoolsExtension = __webpack_require__(726);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21989,7 +21989,7 @@
 
 	var _DirectionComponent2 = _interopRequireDefault(_DirectionComponent);
 
-	var _Layout = __webpack_require__(727);
+	var _Layout = __webpack_require__(720);
 
 	var _Layout2 = _interopRequireDefault(_Layout);
 
@@ -53177,7 +53177,7 @@
 
 	var _reactPlacesAutocomplete = __webpack_require__(663);
 
-	var _geocode = __webpack_require__(726);
+	var _geocode = __webpack_require__(668);
 
 	var _geocode2 = _interopRequireDefault(_geocode);
 
@@ -54338,7 +54338,38 @@
 	};
 
 /***/ }),
-/* 668 */,
+/* 668 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = geocode;
+	function geocode(latLngObj) {
+	    var geocoder = new google.maps.Geocoder();
+
+	    return new Promise(function (resolve, reject) {
+	        var addressData = {};
+	        geocoder.geocode({
+	            'latLng': latLngObj.latLng
+	        }, function (results, status) {
+	            if (status == google.maps.GeocoderStatus.OK) {
+	                if (results[0]) {
+	                    addressData = {
+	                        lat: latLngObj.latLng.lat(),
+	                        lng: latLngObj.latLng.lng(),
+	                        address: results[0].formatted_address
+	                    };
+	                    resolve(addressData);
+	                }
+	            }
+	        });
+	    });
+	}
+
+/***/ }),
 /* 669 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75502,17 +75533,103 @@
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(414);
+
+	var _reactRouterDom = __webpack_require__(185);
+
+	var _FlatButton = __webpack_require__(244);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _MuiThemeProvider = __webpack_require__(366);
+
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+	var _logic = __webpack_require__(662);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Layout = function (_React$Component) {
+	    _inherits(Layout, _React$Component);
+
+	    function Layout(props) {
+	        _classCallCheck(this, Layout);
+
+	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
+	    }
+
+	    _createClass(Layout, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                _MuiThemeProvider2.default,
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'top' },
+	                    _react2.default.createElement(
+	                        _reactRouterDom.Link,
+	                        { to: '/add', className: 'my-link' },
+	                        _react2.default.createElement(
+	                            _FlatButton2.default,
+	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetTracking, className: 'my-button' },
+	                            'Add order'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouterDom.Link,
+	                        { to: '/track', className: 'my-link' },
+	                        _react2.default.createElement(
+	                            _FlatButton2.default,
+	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetAdding, className: 'my-button' },
+	                            'Track order'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Layout;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return {};
+	}, { resetAdding: _logic.resetAdding, resetTracking: _logic.resetTracking })(Layout);
+
+/***/ }),
+/* 721 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
 	var _redux = __webpack_require__(423);
 
-	var _mapReducer = __webpack_require__(721);
+	var _mapReducer = __webpack_require__(722);
 
 	var _mapReducer2 = _interopRequireDefault(_mapReducer);
 
-	var _trackReducer = __webpack_require__(722);
+	var _trackReducer = __webpack_require__(723);
 
 	var _trackReducer2 = _interopRequireDefault(_trackReducer);
 
-	var _orderReducer = __webpack_require__(723);
+	var _orderReducer = __webpack_require__(724);
 
 	var _orderReducer2 = _interopRequireDefault(_orderReducer);
 
@@ -75525,7 +75642,7 @@
 	});
 
 /***/ }),
-/* 721 */
+/* 722 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75621,7 +75738,7 @@
 	}
 
 /***/ }),
-/* 722 */
+/* 723 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75664,7 +75781,7 @@
 	}
 
 /***/ }),
-/* 723 */
+/* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75705,7 +75822,7 @@
 	}
 
 /***/ }),
-/* 724 */
+/* 725 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -75733,7 +75850,7 @@
 	exports['default'] = thunk;
 
 /***/ }),
-/* 725 */
+/* 726 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -75757,124 +75874,6 @@
 	    function() { return function(noop) { return noop; } }
 	);
 
-
-/***/ }),
-/* 726 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = geocode;
-	function geocode(latLngObj) {
-	    var geocoder = new google.maps.Geocoder();
-
-	    return new Promise(function (resolve, reject) {
-	        var addressData = {};
-	        geocoder.geocode({
-	            'latLng': latLngObj.latLng
-	        }, function (results, status) {
-	            if (status == google.maps.GeocoderStatus.OK) {
-	                if (results[0]) {
-	                    addressData = {
-	                        lat: latLngObj.latLng.lat(),
-	                        lng: latLngObj.latLng.lng(),
-	                        address: results[0].formatted_address
-	                    };
-	                    resolve(addressData);
-	                }
-	            }
-	        });
-	    });
-	}
-
-/***/ }),
-/* 727 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(414);
-
-	var _reactRouterDom = __webpack_require__(185);
-
-	var _FlatButton = __webpack_require__(244);
-
-	var _FlatButton2 = _interopRequireDefault(_FlatButton);
-
-	var _MuiThemeProvider = __webpack_require__(366);
-
-	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
-
-	var _logic = __webpack_require__(662);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Layout = function (_React$Component) {
-	    _inherits(Layout, _React$Component);
-
-	    function Layout(props) {
-	        _classCallCheck(this, Layout);
-
-	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
-	    }
-
-	    _createClass(Layout, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                _MuiThemeProvider2.default,
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'top' },
-	                    _react2.default.createElement(
-	                        _reactRouterDom.Link,
-	                        { to: '/add', className: 'my-link' },
-	                        _react2.default.createElement(
-	                            _FlatButton2.default,
-	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetTracking, className: 'my-button' },
-	                            'Add order'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactRouterDom.Link,
-	                        { to: '/track', className: 'my-link' },
-	                        _react2.default.createElement(
-	                            _FlatButton2.default,
-	                            { style: { height: '100px', color: 'rgb(192, 231, 243)' }, onClick: this.props.resetAdding, className: 'my-button' },
-	                            'Track order'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Layout;
-	}(_react2.default.Component);
-
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	    return {};
-	}, { resetAdding: _logic.resetAdding, resetTracking: _logic.resetTracking })(Layout);
 
 /***/ })
 /******/ ]);

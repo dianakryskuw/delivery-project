@@ -91,5 +91,6 @@ var trackOrder = (request, response) => {
 module.exports = {
     addNewOrder,
     addNewOrderFromStore,
-    trackOrder
+    trackOrder,
+    calculatePrice
 }
